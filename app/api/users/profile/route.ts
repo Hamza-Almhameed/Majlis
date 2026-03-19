@@ -28,27 +28,26 @@ export async function PATCH(request: Request) {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
 
   const contentType = request.headers.get("content-type") || "";
-  let bio = "";
-  let email = "";
+  const updates: Record<string, string> = {};
   let avatarFile: File | null = null;
 
   if (contentType.includes("application/json")) {
     const body = await request.json();
-    bio = body.bio || "";
-    email = body.email || "";
+    if (body.bio !== undefined) updates.bio = body.bio;
+    if (body.email) updates.email = body.email;
   } else {
     const formData = await request.formData();
-    bio = formData.get("bio") as string || "";
-    email = formData.get("email") as string || "";
+    if (formData.has("bio")) updates.bio = formData.get("bio") as string;
+    if (formData.has("email") && formData.get("email")) updates.email = formData.get("email") as string;
     avatarFile = formData.get("avatar") as File | null;
   }
 
   // تحقق من الإيميل لو موجود
-  if (email) {
+  if (updates.email) {
     const { data: existing } = await supabase
       .from("users")
       .select("id")
-      .eq("email", email)
+      .eq("email", updates.email)
       .neq("id", decoded.userId)
       .single();
 
@@ -56,8 +55,6 @@ export async function PATCH(request: Request) {
       return Response.json({ error: "الإيميل مستخدم مسبقاً" }, { status: 409 });
     }
   }
-
-  let avatar_url: string | null = null;
 
   // رفع الصورة لو موجودة
   if (avatarFile && avatarFile.size > 0) {
@@ -75,15 +72,13 @@ export async function PATCH(request: Request) {
       const { data: urlData } = supabase.storage
         .from("posts-media")
         .getPublicUrl(fileName);
-      avatar_url = urlData.publicUrl;
+      updates.avatar_url = urlData.publicUrl;
     }
   }
 
-  // بناء الـ update object
-  const updates: Record<string, string> = {};
-  if (bio !== undefined) updates.bio = bio;
-  if (email) updates.email = email;
-  if (avatar_url) updates.avatar_url = avatar_url;
+  if (Object.keys(updates).length === 0) {
+    return Response.json({ message: "لا يوجد تغييرات" });
+  }
 
   const { error } = await supabase
     .from("users")
