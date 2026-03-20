@@ -8,7 +8,7 @@ import {
   faArrowRight, faLock, faEnvelope, faRightFromBracket,
   faBell, faBan, faMessage, faTrash, faInfoCircle,
   faShield, faChevronLeft, faEye, faEyeSlash,
-  faUserCircle, faEnvelope as faEnvelopeAlt,
+  faUserCircle, faEnvelope as faEnvelopeAlt, faClock
 } from "@fortawesome/free-solid-svg-icons";
 import RightSidebar from "@/components/home/RightSidebar";
 import Modal from "@/components/ui/Modal";
@@ -169,6 +169,13 @@ export default function SettingsPage() {
           sub: "قريباً",
           action: null,
           active: false,
+        },
+        {
+          icon: faClock,
+          label: "آخر تواجد",
+          sub: "اظهر آخر تواجد لك للآخرين أم لا",
+          action: null,
+          active: true,
         },
       ],
     },

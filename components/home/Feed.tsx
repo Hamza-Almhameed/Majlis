@@ -37,9 +37,10 @@ interface FeedProps {
   disablePagination?: boolean;
   profileUsername?: string;
   feedType?: "home" | "likes" | "saved";
+  majlisSlug?: string;
 }
 
-export default function Feed({ currentUserId, onDelete, initialPosts, disablePagination, profileUsername, feedType }: FeedProps) {
+export default function Feed({ currentUserId, onDelete, initialPosts, disablePagination, profileUsername, feedType, majlisSlug  }: FeedProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts || []);
   const [loading, setLoading] = useState(!initialPosts);
   
@@ -118,6 +119,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
     if (profileUsername) url = `/api/users/${profileUsername}/posts?page=0`;
     if (feedType === "saved") url = `/api/saved?page=0`;
     if (feedType === "likes") url = `/api/users/${profileUsername}/liked-posts?page=0`;
+    if (majlisSlug) url = `/api/majalis/${majlisSlug}/posts?page=0`;
   
     fetch(url)
       .then((res) => res.json())
@@ -154,6 +156,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
           let url = `/api/posts?page=${nextPage}`;
           if (profileUsername) url = `/api/users/${profileUsername}/posts?page=${nextPage}`;
           if (feedType === "saved") url = `/api/saved?page=${nextPage}`;
+          if (majlisSlug) url = `/api/majalis/${majlisSlug}/posts?page=${nextPage}`;
           fetch(url)
             .then((res) => res.json())
             .then((data: Post[]) => {
