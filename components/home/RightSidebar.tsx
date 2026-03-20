@@ -22,7 +22,7 @@ import Avatar from "@/components/ui/Avatar";
 const menuItems = [
   { icon: faHouse, label: "الرئيسية", href: "/" },
   { icon: faMessage, label: "المحادثات", href: "/messages" },
-  { icon: faBell, label: "التنبيهات", href: "/notifications" },
+  { icon: faBell, label: "التنبيهات", href: "/notifications", badge: true },
   { icon: faUsers, label: "مجالسي", href: "/my-majalis" },
   { icon: faBookmark, label: "المحفوظات", href: "/saved" },
   { icon: faGear, label: "الاعدادات والخصوصية", href: "/settings" },
@@ -33,6 +33,7 @@ export default function RightSidebar() {
   const pathname = usePathname();
   const [createOpen, setCreateOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [user, setUser] = useState<{ username: string; avatar_url?: string | null } | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   
@@ -42,6 +43,18 @@ export default function RightSidebar() {
       .then((res) => res.json())
       .then((data) => setUser(data))
       .catch(() => setUser(null));
+  }, []);
+
+
+  useEffect(() => {
+    function fetchUnread() {
+      fetch("/api/notifications/unread-count")
+        .then((r) => r.json())
+        .then((data) => setUnreadCount(data.count || 0));
+    }
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   // Close menus on outside click or Escape
@@ -165,9 +178,14 @@ export default function RightSidebar() {
             : "hover:bg-shade2/70"
         } focus:outline-none focus:ring-2 focus:ring-primary/40`}
       >
-        <div className="w-5 h-5 flex items-center justify-center text-white/90">
-          <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
-        </div>
+        <div className="relative w-5 h-5 flex items-center justify-center text-white/90">
+  <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
+  {item.badge && unreadCount > 0 && (
+    <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-background text-[9px] font-bold rounded-full flex items-center justify-center">
+      {unreadCount > 9 ? "9+" : unreadCount}
+    </span>
+  )}
+</div>
         <span className="flex-1 text-right">{item.label}</span>
       </Link>
     );

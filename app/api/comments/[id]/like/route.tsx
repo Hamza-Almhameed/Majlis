@@ -29,6 +29,20 @@ export async function POST(
   } else {
     await supabase.from("comment_likes")
       .insert({ user_id: decoded.userId, comment_id: id });
+
+      const { data: comment } = await supabase
+      .from("comments").select("user_id, post_id").eq("id", id).single();
+
+    if (comment && comment.user_id !== decoded.userId) {
+      await supabase.from("notifications").insert({
+        user_id: comment.user_id,
+        actor_id: decoded.userId,
+        type: "like_comment",
+        comment_id: id,
+        post_id: comment.post_id,
+      });
+    }
+
     const { count } = await supabase.from("comment_likes")
       .select("*", { count: "exact", head: true }).eq("comment_id", id);
     return Response.json({ liked: true, count: (count || 0) + 1 });

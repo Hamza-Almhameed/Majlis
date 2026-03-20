@@ -48,6 +48,18 @@ export async function POST(
       .from("likes")
       .insert({ user_id: decoded.userId, post_id: id });
 
+      const { data: post } = await supabase
+      .from("posts").select("user_id").eq("id", id).single();
+
+    if (post && post.user_id !== decoded.userId) {
+      await supabase.from("notifications").insert({
+        user_id: post.user_id,
+        actor_id: decoded.userId,
+        type: "like_post",
+        post_id: id,
+      });
+    }
+
     const { count } = await supabase
       .from("likes")
       .select("*", { count: "exact", head: true })

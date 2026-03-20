@@ -135,5 +135,35 @@ export async function POST(
     return Response.json({ error: "حدث خطأ" }, { status: 500 });
   }
 
+  // إشعار لصاحب المنشور
+  const { data: post } = await supabase
+    .from("posts").select("user_id").eq("id", id).single();
+
+  if (post && post.user_id !== decoded.userId) {
+    await supabase.from("notifications").insert({
+      user_id: post.user_id,
+      actor_id: decoded.userId,
+      type: "comment_post",
+      post_id: id,
+      comment_id: data.id,
+    });
+  }
+
+  // إشعار لصاحب التعليق الأصلي لو كان رد
+  if (parent_id) {
+    const { data: parentComment } = await supabase
+      .from("comments").select("user_id").eq("id", parent_id).single();
+
+    if (parentComment && parentComment.user_id !== decoded.userId) {
+      await supabase.from("notifications").insert({
+        user_id: parentComment.user_id,
+        actor_id: decoded.userId,
+        type: "reply_comment",
+        post_id: id,
+        comment_id: data.id,
+      });
+    }
+  }
+
   return Response.json({ ...data, likes_count: 0, is_liked: false, replies: [] }, { status: 201 });
 }
