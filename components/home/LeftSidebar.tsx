@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faUsers } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 
 interface Majlis {
@@ -11,6 +11,8 @@ interface Majlis {
   name: string;
   slug: string;
   description: string | null;
+  icon_url: string | null;
+  cover_url: string | null;
   members_count: number;
 }
 
@@ -102,29 +104,67 @@ export default function LeftSidebar() {
       </div>
 
       {/* المجالس المقترحة */}
-      <section className="bg-shade2 border border-border rounded-lg overflow-hidden">
-        <header className="px-4 py-3 border-b border-border">
-          <h2 className="text-white font-tajawal font-bold text-sm">المجالس المقترحة ✦</h2>
-        </header>
-        <div className="flex flex-col">
-          {majalis.map((majlis) => (
-            <Link
-              key={majlis.id}
-              href={`/m/${majlis.slug}`}
-              className="flex items-center justify-between px-4 py-3 hover:bg-shade3 transition-colors border-b border-border last:border-0"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="text-primary font-tajawal text-sm font-bold">مجلس {majlis.name}</span>
-                {majlis.description && (
-                  <span className="text-white/40 font-tajawal text-xs line-clamp-1">{majlis.description}</span>
-                )}
-                <span className="text-white/30 font-tajawal text-xs">{majlis.members_count} عضو</span>
+      {/* المجالس المقترحة */}
+<div className="bg-shade2 border border-border rounded-xl">
+  <h2 className="text-white font-tajawal font-bold px-4 py-3 border-b border-border text-sm flex items-center">
+  <span className="text-primary text-2xl ml-2.5">✦</span>
+    المجالس المقترحة
+  </h2>
+  <div className="flex flex-col">
+    {majalis.map((majlis) => (
+      <div key={majlis.id} className="flex flex-col border-b border-border last:border-0">
+        
+        {/* صورة الغلاف أو الأيقونة */}
+        {majlis.cover_url ? (
+          <div className="relative w-full h-28 overflow-hidden">
+            <img
+              src={majlis.cover_url}
+              alt={majlis.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-shade2/90 to-transparent" />
+            <div className="absolute bottom-2 right-3 flex items-center gap-2">
+              {majlis.icon_url && (
+                <img src={majlis.icon_url} alt="" className="w-7 h-7 rounded-full border border-border object-cover" />
+              )}
+              <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 px-4 pt-3">
+            {majlis.icon_url ? (
+              <img src={majlis.icon_url} alt="" className="w-10 h-10 rounded-full border border-border object-cover shrink-0" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-shade3 border border-border flex items-center justify-center shrink-0">
+                <FontAwesomeIcon icon={faUsers} className="w-4 h-4 text-primary" />
               </div>
-              <Avatar username={majlis.name} size={40} />
-            </Link>
-          ))}
+            )}
+            <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
+          </div>
+        )}
+
+        {/* المعلومات */}
+        <div className="px-4 pb-3 flex flex-col gap-2 mt-2">
+          <div className="flex items-center gap-1 text-white/40 font-tajawal text-xs">
+            <FontAwesomeIcon icon={faUsers} className="w-3 h-3" />
+            <span>{majlis.members_count} عضو</span>
+          </div>
+          {majlis.description && (
+            <p className="text-white/50 font-tajawal text-xs leading-relaxed line-clamp-2">
+              {majlis.description}
+            </p>
+          )}
+          <Link
+            href={`/m/${majlis.slug}`}
+            className="w-full text-center bg-primary text-background font-tajawal font-bold text-xs py-2 rounded-lg hover:opacity-90 transition-opacity mt-1"
+          >
+            زيارة المجلس
+          </Link>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</div>
     </aside>
   );
 }

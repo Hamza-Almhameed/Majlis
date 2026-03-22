@@ -46,9 +46,19 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
   
 
   // local UI state maps
-  const [liked, setLiked] = useState<Record<string, boolean>>({});
+  const [liked, setLiked] = useState<Record<string, boolean>>(() => {
+    if (!initialPosts) return {};
+    const map: Record<string, boolean> = {};
+    initialPosts.forEach((p) => { map[p.id] = p.is_liked; });
+    return map;
+  });
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() => {
+    if (!initialPosts) return {};
+    const map: Record<string, number> = {};
+    initialPosts.forEach((p) => { map[p.id] = p.likes_count; });
+    return map;
+  });
 
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(!disablePagination);
@@ -71,7 +81,12 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
   const [likingPostId, setLikingPostId] = useState<string | null>(null);
   const [savingPostId, setSavingPostId] = useState<string | null>(null);
 
-  const [savedMap, setSavedMap] = useState<Record<string, boolean>>({});
+  const [savedMap, setSavedMap] = useState<Record<string, boolean>>(() => {
+    if (!initialPosts) return {};
+    const map: Record<string, boolean> = {};
+    initialPosts.forEach((p) => { map[p.id] = p.is_saved; });
+    return map;
+  });
 
   async function handleEdit(postId: string, newContent: string) {
     const res = await fetch(`/api/posts/${postId}`, {
