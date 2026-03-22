@@ -29,23 +29,32 @@ export async function POST(
   if (existing) return Response.json({ error: "أنت عضو مسبقاً" }, { status: 409 });
 
   if (majlis.is_private) {
-    // أرسل طلب انضمام
     const { data: existingRequest } = await supabase
       .from("majalis_join_requests")
       .select("status")
       .eq("user_id", decoded.userId)
       .eq("majlis_id", majlis.id)
       .single();
-
-    if (existingRequest) {
+  
+    // لو في طلب معلق فقط، ما يسمح بطلب جديد
+    if (existingRequest && existingRequest.status === "pending") {
       return Response.json({ error: "لديك طلب انضمام سابق" }, { status: 409 });
     }
-
+  
+    // لو الطلب انرفض، احذفه وأنشئ طلب جديد
+    if (existingRequest && existingRequest.status === "rejected") {
+      await supabase
+        .from("majalis_join_requests")
+        .delete()
+        .eq("user_id", decoded.userId)
+        .eq("majlis_id", majlis.id);
+    }
+  
     await supabase.from("majalis_join_requests").insert({
       user_id: decoded.userId,
       majlis_id: majlis.id,
     });
-
+  
     return Response.json({ message: "تم إرسال طلب الانضمام", status: "pending" });
   } else {
     // انضم مباشرة

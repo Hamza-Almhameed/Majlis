@@ -207,6 +207,15 @@ export default function ManageMajlisPage() {
               ) : (
                 data?.joinRequests.map((req) => (
                   <div key={req.id} className="bg-shade2 border border-border rounded-2xl p-4 flex items-center justify-between" dir="rtl">
+                    <div className="flex items-center gap-3">
+                    <Avatar username={req.user.username} avatarUrl={req.user.avatar_url} size={40} />
+                      <div className="flex flex-col items-start">
+                        <Link href={`/u/${req.user.username}`} className="text-white font-tajawal font-bold text-sm hover:underline">
+                          {req.user.username}
+                        </Link>
+                        <span className="text-white/40 font-tajawal text-xs">{timeAgo(req.created_at)}</span>
+                      </div>
+                    </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleRequest(req.id, "approve")}
@@ -222,15 +231,6 @@ export default function ManageMajlisPage() {
                         <FontAwesomeIcon icon={faXmark} className="w-3 h-3" />
                         رفض
                       </button>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex flex-col items-end">
-                        <Link href={`/u/${req.user.username}`} className="text-white font-tajawal font-bold text-sm hover:underline">
-                          {req.user.username}
-                        </Link>
-                        <span className="text-white/40 font-tajawal text-xs">{timeAgo(req.created_at)}</span>
-                      </div>
-                      <Avatar username={req.user.username} avatarUrl={req.user.avatar_url} size={40} />
                     </div>
                   </div>
                 ))

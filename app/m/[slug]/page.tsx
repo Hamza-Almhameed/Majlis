@@ -12,6 +12,7 @@ import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
 import Feed from "@/components/home/Feed";
 import Avatar from "@/components/ui/Avatar";
+import CreatePostBox from "@/components/home/CreatePostBox";
 
 interface Majlis {
   id: string;
@@ -36,7 +37,7 @@ export default function MajlisPage() {
   const [majlis, setMajlis] = useState<Majlis | null>(null);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ id: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ id: string; username: string; avatar_url?: string } | null>(null);
   const [feedKey, setFeedKey] = useState(0);
 
   useEffect(() => {
@@ -218,11 +219,21 @@ export default function MajlisPage() {
               <p className="text-white/40 font-tajawal">هذا المجلس خاص، انضم لرؤية المنشورات</p>
             </div>
           ) : (
-            <Feed
-              key={feedKey}
-              currentUserId={currentUser?.id}
-              majlisSlug={slug}
-            />
+            <>
+    {canPost && (
+      <CreatePostBox
+        username={currentUser?.username || ""}
+        avatarUrl={currentUser?.avatar_url}
+        majlisId={majlis.id}
+        onPost={() => setFeedKey((k) => k + 1)}
+      />
+    )}
+    <Feed
+      key={feedKey}
+      currentUserId={currentUser?.id}
+      majlisSlug={slug}
+    />
+  </>
           )}
         </div>
 

@@ -8,9 +8,10 @@ interface CreatePostBoxProps {
   username: string;
   avatarUrl?: string | null;
   onPost?: () => void;
+  majlisId?: string;
 }
 
-export default function CreatePostBox({ username, avatarUrl , onPost }: CreatePostBoxProps) {
+export default function CreatePostBox({ username, avatarUrl , onPost, majlisId }: CreatePostBoxProps) {
   const router = useRouter();
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,11 @@ export default function CreatePostBox({ username, avatarUrl , onPost }: CreatePo
     const res = await fetch("/api/posts/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content, visibility: "public" }),
+      body: JSON.stringify({
+        content,
+        visibility: "public",
+        majlis_id: majlisId || null,
+      }),
     });
 
     setLoading(false);
