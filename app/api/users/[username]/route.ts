@@ -22,7 +22,7 @@ export async function GET(
   // جيب بيانات المستخدم
   const { data: user, error } = await supabase
     .from("users")
-    .select("id, username, bio, avatar_url, badges, created_at")
+    .select("id, username, bio, avatar_url, badges, created_at, last_seen, show_last_seen")
     .eq("username", username)
     .single();
 
@@ -46,6 +46,7 @@ export async function GET(
 
   return Response.json({
     ...user,
+    last_seen: user.show_last_seen ? user.last_seen : null,
     posts_count: postsCount || 0,
     likes_received: likesReceived || 0,
     majalis_count: majalisCount || 0,

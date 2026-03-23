@@ -21,6 +21,7 @@ interface Post {
   user: {
     username: string;
     avatar_url: string | null;
+    last_seen: string | null;
   };
   majlis: {
     name: string;
@@ -288,7 +289,13 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
             <header className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <Link href={`/u/${post.user.username}`} className="rounded-full shrink-0" aria-label={`${post.user.username} - ملف المستخدم`}>
-                  <Avatar username={post.user.username} avatarUrl={post.user.avatar_url} size={48} />
+                <Avatar
+                username={post.user.username}
+                avatarUrl={post.user.avatar_url}
+                lastSeen={post.user.last_seen}
+                showPresence={true}
+                size={48}
+                 />
                 </Link>
 
                 <div className="flex flex-col items-start min-w-0">

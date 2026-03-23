@@ -19,7 +19,7 @@ interface Comment {
   parent_id: string | null;
   likes_count: number;
   is_liked: boolean;
-  user: { username: string; avatar_url: string | null };
+  user: { username: string; avatar_url: string | null; last_seen: string | null };
   replies?: Comment[];
 }
 
@@ -33,7 +33,7 @@ interface Post {
   is_liked: boolean;
   likes_count: number;
   comments_count: number;
-  user: { username: string; avatar_url: string | null };
+  user: { username: string; avatar_url: string | null; last_seen: string | null };
   majlis: { name: string; slug: string } | null;
   is_saved?: boolean;
 }
@@ -320,7 +320,13 @@ export default function PostPage() {
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <Link href={`/u/${post.user.username}`}>
-                  <Avatar username={post.user.username} avatarUrl={post.user.avatar_url} size={48} />
+                <Avatar
+                  username={post.user.username}
+                  avatarUrl={post.user.avatar_url}
+                  lastSeen={post.user.last_seen}
+                  showPresence={true}
+                  size={48}
+                />
                 </Link>
                 <div className="flex flex-col">
                   <Link href={`/u/${post.user.username}`} className="text-white font-tajawal font-bold hover:underline">
@@ -520,7 +526,13 @@ export default function PostPage() {
 
           {/* improved composer */}
           <div className="bg-shade1 border border-border rounded-2xl p-4 flex gap-3 items-start" dir="rtl">
-            <Avatar username={currentUser?.username || ""} size={44} />
+          <Avatar
+            username={post.user.username}
+            avatarUrl={post.user.avatar_url}
+            lastSeen={post.user.last_seen}
+            showPresence={true}
+            size={44}
+          />
             <div className="flex-1">
               {replyingTo && (
                 <div className="flex items-center justify-between bg-shade3/60 border border-border rounded-lg px-3 py-2 mb-3">
@@ -612,7 +624,13 @@ export default function PostPage() {
                 <div key={comment.id} className="bg-shade3/40 border border-border rounded-2xl p-3 flex flex-col gap-3" dir="rtl">
                   <div className="flex items-start gap-3">
                     <Link href={`/u/${comment.user.username}`}>
-                      <Avatar username={comment.user.username} avatarUrl={comment.user.avatar_url} size={36} />
+                    <Avatar
+                      username={post.user.username}
+                      avatarUrl={post.user.avatar_url}
+                      lastSeen={post.user.last_seen}
+                      showPresence={true}
+                      size={36}
+                    />
                     </Link>
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-3">
@@ -689,7 +707,13 @@ export default function PostPage() {
                       {comment.replies.map((reply) => (
                         <div key={reply.id} className="flex items-start gap-2">
                           <Link href={`/u/${reply.user.username}`}>
-                            <Avatar username={reply.user.username} avatarUrl={reply.user.avatar_url} size={28} />
+                          <Avatar
+                            username={post.user.username}
+                            avatarUrl={post.user.avatar_url}
+                            lastSeen={post.user.last_seen}
+                            showPresence={true}
+                            size={28}
+                          />
                           </Link>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">

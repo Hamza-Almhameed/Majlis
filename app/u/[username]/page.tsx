@@ -21,6 +21,7 @@ interface UserProfile {
   likes_received: number;
   majalis_count: number;
   is_own_profile: boolean;
+  last_seen: string | null;
 }
 
 interface MajlisMember {
@@ -45,6 +46,10 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<Tab>("posts");
   const [majalis, setMajalis] = useState<MajlisMember[]>([]);
   const [currentUser, setCurrentUser] = useState<{ id: string } | null>(null);
+
+  const isOnline = profile?.last_seen
+  ? (Date.now() - new Date(profile.last_seen).getTime()) < 3 * 60 * 1000
+  : false;
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then(setCurrentUser);
@@ -101,6 +106,18 @@ export default function ProfilePage() {
                   <h2 className="text-white font-tajawal text-2xl">{profile.username}</h2>
                   <p className="text-white/40 font-tajawal text-sm">
                     انضم {timeAgo(profile.created_at)}
+                  </p>
+                  <p className="font-tajawal text-xs flex items-center gap-1 mt-1">
+                    {isOnline ? (
+                      <>
+                        <span className="w-2 h-2 rounded-full bg-primary inline-block" />
+                        <span className="text-primary">متواجد الآن</span>
+                      </>
+                    ) : profile.last_seen ? (
+                      <span className="text-white/30">آخر تواجد {timeAgo(profile.last_seen)}</span>
+                    ) : (
+                      <></>
+                    )}
                   </p>
                 </div>
               </div>

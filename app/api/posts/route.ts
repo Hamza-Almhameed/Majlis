@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       media_type,
       is_temporary,
       created_at,
-      user:users!posts_user_id_fkey(username, avatar_url),
+      user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
       majlis:majalis!posts_majlis_id_fkey(name, slug),
       likes_count:likes(count),
       comments_count:comments(count)
@@ -80,6 +80,10 @@ export async function GET(request: Request) {
     ...post,
     is_liked: userLikes.has(post.id),
     is_saved: userSaved.has(post.id),
+    user: {
+      ...post.user,
+      last_seen: (post.user as any).show_last_seen ? (post.user as any).last_seen : null,
+    },
   }));
 
   

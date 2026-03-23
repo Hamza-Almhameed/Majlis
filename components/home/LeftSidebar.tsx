@@ -122,7 +122,7 @@ export default function LeftSidebar() {
               alt={majlis.name}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-shade2/90 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-shade2 to-transparent" />
             <div className="absolute bottom-2 right-3 flex items-center gap-2">
               {majlis.icon_url && (
                 <img src={majlis.icon_url} alt="" className="w-7 h-7 rounded-full border border-border object-cover" />

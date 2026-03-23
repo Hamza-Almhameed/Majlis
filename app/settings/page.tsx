@@ -42,10 +42,15 @@ export default function SettingsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const [showLastSeen, setShowLastSeen] = useState(true);
+
   useEffect(() => {
     fetch("/api/users/profile")
       .then((r) => r.json())
-      .then(setUser);
+      .then((data) => {
+        setUser(data);
+        setShowLastSeen(data.show_last_seen ?? true);
+      });
   }, []);
 
   function resetMessages() {
@@ -173,9 +178,19 @@ export default function SettingsPage() {
         {
           icon: faClock,
           label: "آخر تواجد",
-          sub: "اظهر آخر تواجد لك للآخرين أم لا",
-          action: null,
+          sub: showLastSeen ? "ظاهر للآخرين" : "مخفي عن الآخرين",
+          action: async () => {
+            const newVal = !showLastSeen;
+            setShowLastSeen(newVal);
+            await fetch("/api/users/presence-setting", {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ show_last_seen: newVal }),
+            });
+          },
           active: true,
+          toggle: true,
+          toggleValue: showLastSeen,
         },
       ],
     },
@@ -285,7 +300,15 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {item.active ? (
+              {item.toggle !== undefined ? (
+                <div className={`w-10 h-6 rounded-full transition-colors relative ${
+                  item.toggleValue ? "bg-primary" : "bg-shade3"
+                }`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                    item.toggleValue ? "right-1" : "left-1"
+                  }`} />
+                </div>
+              ) : item.active ? (
                 <FontAwesomeIcon icon={faChevronLeft} className="w-4 h-4 text-white/30" />
               ) : (
                 <div className="text-white/30 text-[10px] bg-white/5 px-2 py-1 rounded">قريباً</div>

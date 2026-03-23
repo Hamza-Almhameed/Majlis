@@ -33,7 +33,7 @@ export async function GET(
       created_at,
       parent_id,
       user_id,
-      user:users!comments_user_id_fkey(username, avatar_url),
+      user:users!comments_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
       likes_count:comment_likes(count)
     `)
     .eq("post_id", id)
@@ -81,12 +81,20 @@ export async function GET(
     ...comment,
     likes_count: (comment.likes_count as any)[0]?.count || 0,
     is_liked: userLikes.has(comment.id),
+    user: {
+      ...comment.user,
+      last_seen: (comment.user as any).show_last_seen ? (comment.user as any).last_seen : null,
+    },
     replies: (replies || [])
       .filter((r) => r.parent_id === comment.id)
       .map((r) => ({
         ...r,
         likes_count: (r.likes_count as any)[0]?.count || 0,
         is_liked: userLikes.has(r.id),
+        user: {
+          ...r.user,
+          last_seen: (r.user as any).show_last_seen ? (r.user as any).last_seen : null,
+        },
       })),
   }));
 
