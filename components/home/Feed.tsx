@@ -7,6 +7,7 @@ import { faHeart as faHeartOutline, faComment, faBookmark as faBookmarkOutline }
 import { faClock, faHeart as faHeartSolid, faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 import ImageLightbox from "@/components/ui/ImageLightbox";
+import RichText from "@/components/ui/RichText";
 
 interface Post {
   id: string;
@@ -417,7 +418,10 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
               </div>
             ) : (
               <div className="text-right text-white font-tajawal leading-relaxed max-w-full wrap-break-word">
-                <p className={`transition-all ${isExpanded ? "" : "line-clamp-4"}`}>{post.content}</p>
+                <RichText
+                  content={post.content}
+                  className={`transition-all ${isExpanded ? "" : "line-clamp-4"}`}
+                />
                 {!isExpanded && post.content.length > 280 && (
                   <button
                     onClick={() => setExpanded((s) => ({ ...s, [post.id]: true }))}

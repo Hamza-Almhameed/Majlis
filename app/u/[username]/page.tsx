@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
             {/* البايو */}
             {profile.bio && (
-              <p className="text-white/80 font-tajawal leading-relaxed">{profile.bio}</p>
+              <p className="text-white/80 font-tajawal leading-relaxed whitespace-pre-wrap">{profile.bio}</p>
             )}
 
             {/* الإحصائيات */}

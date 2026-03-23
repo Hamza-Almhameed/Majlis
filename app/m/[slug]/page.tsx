@@ -200,7 +200,7 @@ export default function MajlisPage() {
               </div>
 
               {/* الوصف */}
-              <p className="text-white/60 font-tajawal text-sm leading-relaxed">{majlis.description}</p>
+              <p className="text-white/60 font-tajawal text-sm leading-relaxed whitespace-pre-wrap">{majlis.description}</p>
 
               {/* القواعد */}
               {majlis.rules && (

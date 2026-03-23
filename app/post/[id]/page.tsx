@@ -4,12 +4,13 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faHeart as faHeartSolid, faEllipsisVertical, faBookmark as faBookmarkSolid, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faHeart as faHeartSolid, faEllipsisVertical, faBookmark as faBookmarkSolid, faChevronDown, faChevronUp, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartOutline, faComment, faBookmark as faBookmarkOutline , faComments} from "@fortawesome/free-regular-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
 import ImageLightbox from "@/components/ui/ImageLightbox";
+import RichText from "@/components/ui/RichText";
 
 interface Comment {
   id: string;
@@ -403,7 +404,7 @@ export default function PostPage() {
                 </div>
               </div>
             ) : (
-              <p className="text-white font-tajawal leading-relaxed text-right">{post.content}</p>
+              <RichText content={post.content} className="text-white font-tajawal leading-relaxed text-right" />
             )}
 
             {post.media_type === "image" && post.media_url && (() => {
@@ -681,7 +682,7 @@ export default function PostPage() {
                           </div>
                         </div>
                       ) : (
-                        <p className="text-white font-tajawal text-sm leading-relaxed mt-2">{comment.content}</p>
+                        <RichText content={comment.content} className="text-white font-tajawal text-sm leading-relaxed mt-2" />
                       )}
                     </div>
                   </div>
@@ -704,30 +705,38 @@ export default function PostPage() {
 
                   {comment.replies && comment.replies.length > 0 && (
                     <div className="mt-3 mr-6 pr-3 border-r-2 border-border flex flex-col gap-2">
-                      {comment.replies.map((reply) => (
-                        <div key={reply.id} className="flex items-start gap-2">
-                          <Link href={`/u/${reply.user.username}`}>
-                          <Avatar
-                            username={post.user.username}
-                            avatarUrl={post.user.avatar_url}
-                            lastSeen={post.user.last_seen}
-                            showPresence={true}
-                            size={28}
-                          />
-                          </Link>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <Link href={`/u/${reply.user.username}`} className="text-white font-tajawal font-bold text-xs hover:underline">
-                                {reply.user.username}
-                              </Link>
-                              <span className="text-white/40 font-tajawal text-xs">{timeAgo(reply.created_at)}</span>
-                            </div>
-                            <p className="text-white/60 font-tajawal text-sm leading-relaxed mt-1">{reply.content}</p>
+                  {comment.replies.map((reply) => (
+                    <div key={reply.id} className="flex items-start gap-2">
+                      <Link href={`/u/${reply.user.username}`}>
+                        <Avatar username={reply.user.username} avatarUrl={reply.user.avatar_url} size={28} />
+                      </Link>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                            <Link href={`/u/${reply.user.username}`} className="text-white font-tajawal font-bold text-xs hover:underline">
+                              {reply.user.username}
+                            </Link>
+                            <span className="text-white/40 font-tajawal text-xs">{timeAgo(reply.created_at)}</span>
                           </div>
+                          <div className="flex items-center gap-2">
+                            {/* زر الحذف لو كان الرد للمستخدم الحالي */}
+                            {currentUser?.id === reply.user_id && (
+                              <button
+                                onClick={() => handleDeleteComment(reply.id)}
+                                className="text-red-400/60 hover:text-red-400 transition-colors"
+                              >
+                                <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />
+                              </button>
+                            )}
+                          </div>
+                          
                         </div>
-                      ))}
+                        <p className="text-white/60 font-tajawal text-sm leading-relaxed mt-1">{reply.content}</p>
+                      </div>
                     </div>
-                  )}
+                  ))}
+                </div>
+              )}
                 </div>
               ))
             )}
