@@ -34,40 +34,56 @@ export async function GET(request: Request) {
     );
   }
 
-  // الـ query مع فلتر المحظورين
   // جيب المجالس الخاصة
   const { data: privateMajalis } = await supabase
-  .from("majalis")
-  .select("id")
-  .eq("is_private", true);
+    .from("majalis")
+    .select("id")
+    .eq("is_private", true);
 
   const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
 
-  let query = supabase
-  .from("posts")
-  .select(`
-    id, user_id, content, media_url, media_type,
-    is_temporary, created_at,
-    user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
-    majlis:majalis!posts_majlis_id_fkey(name, slug),
-    likes_count:likes(count),
-    comments_count:comments(count)
-  `)
-  .order("created_at", { ascending: false })
-  .range(from, to);
+  // جيب المجالس الخاصة اللي المستخدم عضو فيها
+  let userPrivateMajalisIds: string[] = [];
+  if (currentUserId && privateMajalisIds.length > 0) {
+    const { data: memberOf } = await supabase
+      .from("majalis_members")
+      .select("majlis_id")
+      .eq("user_id", currentUserId)
+      .in("majlis_id", privateMajalisIds);
 
-  // استثني منشورات المجالس الخاصة فقط، مش المنشورات بدون مجلس
-  if (privateMajalisIds.length > 0) {
+    userPrivateMajalisIds = memberOf?.map((m) => m.majlis_id) || [];
+  }
+
+  // المجالس الخاصة اللي المستخدم مش عضو فيها
+  const excludedMajalisIds = privateMajalisIds.filter(
+    (id) => !userPrivateMajalisIds.includes(id)
+  );
+
+  // بناء الـ query
+  let query = supabase
+    .from("posts")
+    .select(`
+      id, user_id, content, media_url, media_type,
+      is_temporary, created_at,
+      user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
+      majlis:majalis!posts_majlis_id_fkey(name, slug),
+      likes_count:likes(count),
+      comments_count:comments(count)
+    `)
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  // استثني منشورات المجالس الخاصة اللي المستخدم مش عضو فيها
+  if (excludedMajalisIds.length > 0) {
     query = query.or(
-      `majlis_id.is.null,majlis_id.not.in.(${privateMajalisIds.join(",")})`
+      `majlis_id.is.null,majlis_id.not.in.(${excludedMajalisIds.join(",")})`
     );
   }
 
   // استثني المحظورين
   if (blockedIds.length > 0) {
-  query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
+    query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
   }
-
 
   const { data: posts, error } = await query;
 

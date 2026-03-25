@@ -1,4 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export async function GET(
   request: Request,
@@ -11,12 +13,49 @@ export async function GET(
   const from = page * limit;
   const to = from + limit - 1;
 
+  // جيب المستخدم الحالي
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  let currentUserId: string | null = null;
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+      currentUserId = decoded.userId;
+    } catch {}
+  }
+
   const { data: user } = await supabase
     .from("users").select("id").eq("username", username).single();
 
   if (!user) return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
 
-  const { data, error } = await supabase
+  // جيب المجالس الخاصة
+  const { data: privateMajalis } = await supabase
+    .from("majalis")
+    .select("id")
+    .eq("is_private", true);
+
+  const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
+
+  // جيب المجالس الخاصة اللي المستخدم الحالي عضو فيها
+  let userPrivateMajalisIds: string[] = [];
+  if (currentUserId && privateMajalisIds.length > 0) {
+    const { data: memberOf } = await supabase
+      .from("majalis_members")
+      .select("majlis_id")
+      .eq("user_id", currentUserId)
+      .in("majlis_id", privateMajalisIds);
+
+    userPrivateMajalisIds = memberOf?.map((m) => m.majlis_id) || [];
+  }
+
+  const excludedMajalisIds = privateMajalisIds.filter(
+    (id) => !userPrivateMajalisIds.includes(id)
+  );
+
+  // بناء الـ query
+  let query = supabase
     .from("posts")
     .select(`
       id, user_id, content, media_url, media_type,
@@ -29,6 +68,15 @@ export async function GET(
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .range(from, to);
+
+  // استثني منشورات المجالس الخاصة اللي المستخدم مش عضو فيها
+  if (excludedMajalisIds.length > 0) {
+    query = query.or(
+      `majlis_id.is.null,majlis_id.not.in.(${excludedMajalisIds.join(",")})`
+    );
+  }
+
+  const { data, error } = await query;
 
   if (error) return Response.json({ error: error.message }, { status: 500 });
 
