@@ -46,7 +46,7 @@ export default function CreatePostPage() {
       .then((res) => res.json())
       .then((data) => setUser(data));
 
-    fetch("/api/majalis")
+    fetch("/api/majalis?my=true")
       .then((res) => res.json())
       .then((data) => setMajalisList(data));
   }, []);

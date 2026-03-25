@@ -35,28 +35,39 @@ export async function GET(request: Request) {
   }
 
   // الـ query مع فلتر المحظورين
-  let query = supabase
-    .from("posts")
-    .select(`
-      id,
-      user_id,
-      content,
-      media_url,
-      media_type,
-      is_temporary,
-      created_at,
-      user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
-      majlis:majalis!posts_majlis_id_fkey(name, slug),
-      likes_count:likes(count),
-      comments_count:comments(count)
-    `)
-    .eq("visibility", "public")
-    .order("created_at", { ascending: false })
-    .range(from, to);
+  // جيب المجالس الخاصة
+  const { data: privateMajalis } = await supabase
+  .from("majalis")
+  .select("id")
+  .eq("is_private", true);
 
-  if (blockedIds.length > 0) {
-    query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
+  const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
+
+  let query = supabase
+  .from("posts")
+  .select(`
+    id, user_id, content, media_url, media_type,
+    is_temporary, created_at,
+    user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
+    majlis:majalis!posts_majlis_id_fkey(name, slug),
+    likes_count:likes(count),
+    comments_count:comments(count)
+  `)
+  .order("created_at", { ascending: false })
+  .range(from, to);
+
+  // استثني منشورات المجالس الخاصة فقط، مش المنشورات بدون مجلس
+  if (privateMajalisIds.length > 0) {
+    query = query.or(
+      `majlis_id.is.null,majlis_id.not.in.(${privateMajalisIds.join(",")})`
+    );
   }
+
+  // استثني المحظورين
+  if (blockedIds.length > 0) {
+  query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
+  }
+
 
   const { data: posts, error } = await query;
 

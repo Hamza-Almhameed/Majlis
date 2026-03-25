@@ -9,9 +9,10 @@ interface CreatePostBoxProps {
   avatarUrl?: string | null;
   onPost?: () => void;
   majlisId?: string;
+  majlisIsPrivate?: boolean;
 }
 
-export default function CreatePostBox({ username, avatarUrl , onPost, majlisId }: CreatePostBoxProps) {
+export default function CreatePostBox({ username, avatarUrl , onPost, majlisId, majlisIsPrivate }: CreatePostBoxProps) {
   const router = useRouter();
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,13 +26,12 @@ export default function CreatePostBox({ username, avatarUrl , onPost, majlisId }
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         content,
-        visibility: "public",
+        visibility: majlisIsPrivate ? "majlis_only" : "public",
         majlis_id: majlisId || null,
       }),
     });
 
     setLoading(false);
-
     if (res.ok) {
       setContent("");
       onPost?.();

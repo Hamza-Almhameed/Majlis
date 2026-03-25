@@ -225,6 +225,7 @@ export default function MajlisPage() {
         username={currentUser?.username || ""}
         avatarUrl={currentUser?.avatar_url}
         majlisId={majlis.id}
+        majlisIsPrivate={majlis.is_private}
         onPost={() => setFeedKey((k) => k + 1)}
       />
     )}
