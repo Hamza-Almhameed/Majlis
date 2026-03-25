@@ -77,7 +77,28 @@ export async function GET(
     userLikes = new Set(likes?.map((l) => l.comment_id) || []);
   }
 
-  const formatted = data.map((comment) => ({
+  let blockedIds: string[] = [];
+  if (currentUserId) {
+    const { data: blocks } = await supabase
+      .from("blocks")
+      .select("blocked_id, blocker_id")
+      .or(`blocker_id.eq.${currentUserId},blocked_id.eq.${currentUserId}`);
+
+    blockedIds = (blocks || []).map((b) =>
+      b.blocker_id === currentUserId ? b.blocked_id : b.blocker_id
+    );
+  }
+
+  // فلتر التعليقات
+  const filteredData = blockedIds.length > 0
+    ? data.filter((c) => !blockedIds.includes(c.user_id))
+    : data;
+
+  const filteredReplies = blockedIds.length > 0
+    ? (replies || []).filter((r) => !blockedIds.includes(r.user_id))
+    : (replies || []);
+
+  const formatted = filteredData.map((comment) => ({
     ...comment,
     likes_count: (comment.likes_count as any)[0]?.count || 0,
     is_liked: userLikes.has(comment.id),
@@ -85,7 +106,7 @@ export async function GET(
       ...comment.user,
       last_seen: (comment.user as any).show_last_seen ? (comment.user as any).last_seen : null,
     },
-    replies: (replies || [])
+    replies: (filteredReplies || [])
       .filter((r) => r.parent_id === comment.id)
       .map((r) => ({
         ...r,

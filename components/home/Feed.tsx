@@ -158,6 +158,9 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
         setLoading(false);
       })
       .catch(() => setLoading(false));
+
+      // احذف المنشورات المنتهية
+      fetch("/api/posts/cleanup", { method: "POST" });
   }, []);
 
   // infinite scroll

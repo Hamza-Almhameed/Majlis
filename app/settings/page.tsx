@@ -164,9 +164,9 @@ export default function SettingsPage() {
         {
           icon: faBan,
           label: "الحسابات المحظورة",
-          sub: "قريباً",
-          action: null,
-          active: false,
+          sub: "إدارة الحسابات المحظورة",
+          action: () => router.push("/blocked"),
+          active: true,
         },
         {
           icon: faMessage,

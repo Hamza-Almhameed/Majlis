@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faPen, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faBan, faPen, faUsers } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
@@ -46,6 +46,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<Tab>("posts");
   const [majalis, setMajalis] = useState<MajlisMember[]>([]);
   const [currentUser, setCurrentUser] = useState<{ id: string } | null>(null);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const isOnline = profile?.last_seen
   ? (Date.now() - new Date(profile.last_seen).getTime()) < 3 * 60 * 1000
@@ -53,18 +54,37 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then(setCurrentUser);
-
+  
     fetch(`/api/users/${username}`)
       .then((r) => r.json())
       .then((data) => {
+        if (data.blocked) {
+          router.push("/");
+          return;
+        }
         setProfile(data);
         setLoading(false);
       });
-
+  
     fetch(`/api/users/${username}/majalis`)
       .then((r) => r.json())
       .then(setMajalis);
+  
+    fetch("/api/users/blocked")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const blocked = data.some((b) => b.blocked?.username === username);
+          setIsBlocked(blocked);
+        }
+      });
   }, [username]);
+
+  async function handleBlock() {
+    const res = await fetch(`/api/users/${username}/block`, { method: "POST" });
+    const data = await res.json();
+    setIsBlocked(data.blocked);
+  }
 
   if (loading) return (
     <main className="bg-background min-h-screen p-6">
@@ -122,13 +142,27 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {profile.is_own_profile && (
+              <div className="flex items-center gap-2">
+              {profile.is_own_profile ? (
                 <Link href="/edit-profile"
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-shade3 text-white font-tajawal text-sm hover:bg-border transition-colors">
                   <FontAwesomeIcon icon={faPen} className="w-3 h-3" />
                   تعديل الملف
                 </Link>
+              ) : (
+                <button
+                  onClick={handleBlock}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-tajawal text-sm transition-colors ${
+                    isBlocked
+                      ? "bg-red-400/10 text-red-400 hover:bg-red-400/20"
+                      : "bg-shade3 text-white/60 hover:bg-border"
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faBan} className="w-3 h-3" />
+                  {isBlocked ? "إلغاء الحظر" : "حظر"}
+                </button>
               )}
+            </div>
             </div>
 
             {/* البايو */}

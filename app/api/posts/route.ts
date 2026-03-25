@@ -9,7 +9,33 @@ export async function GET(request: Request) {
   const from = page * limit;
   const to = from + limit - 1;
 
-  const { data: posts, error } = await supabase
+  // جيب المستخدم الحالي أولاً
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  let currentUserId: string | null = null;
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+      currentUserId = decoded.userId;
+    } catch {}
+  }
+
+  // جيب قائمة المحظورين
+  let blockedIds: string[] = [];
+  if (currentUserId) {
+    const { data: blocks } = await supabase
+      .from("blocks")
+      .select("blocked_id, blocker_id")
+      .or(`blocker_id.eq.${currentUserId},blocked_id.eq.${currentUserId}`);
+
+    blockedIds = (blocks || []).map((b) =>
+      b.blocker_id === currentUserId ? b.blocked_id : b.blocker_id
+    );
+  }
+
+  // الـ query مع فلتر المحظورين
+  let query = supabase
     .from("posts")
     .select(`
       id,
@@ -28,6 +54,12 @@ export async function GET(request: Request) {
     .order("created_at", { ascending: false })
     .range(from, to);
 
+  if (blockedIds.length > 0) {
+    query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
+  }
+
+  const { data: posts, error } = await query;
+
   if (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
@@ -38,19 +70,7 @@ export async function GET(request: Request) {
     comments_count: post.comments_count[0]?.count || 0,
   }));
 
-  // جيب المستخدم الحالي
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  let currentUserId: string | null = null;
-
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-      currentUserId = decoded.userId;
-    } catch {}
-  }
-
-  // جيب المحفوظات الحالية للمستخدم
+  // جيب المحفوظات
   let userSaved: Set<string> = new Set();
   if (currentUserId && formatted.length > 0) {
     const postIds = formatted.map((p) => p.id);
@@ -63,7 +83,7 @@ export async function GET(request: Request) {
     userSaved = new Set(saved?.map((s) => s.post_id) || []);
   }
 
-  // جيب إعجابات المستخدم الحالي
+  // جيب الإعجابات
   let userLikes: Set<string> = new Set();
   if (currentUserId && formatted.length > 0) {
     const postIds = formatted.map((p) => p.id);
@@ -85,8 +105,6 @@ export async function GET(request: Request) {
       last_seen: (post.user as any).show_last_seen ? (post.user as any).last_seen : null,
     },
   }));
-
-  
 
   return Response.json(withLikeStatus);
 }

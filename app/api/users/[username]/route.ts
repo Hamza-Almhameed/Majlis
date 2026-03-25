@@ -30,6 +30,18 @@ export async function GET(
     return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
   }
 
+  if (currentUserId && currentUserId !== user.id) {
+    const { data: block } = await supabase
+      .from("blocks")
+      .select("blocker_id")
+      .or(`and(blocker_id.eq.${currentUserId},blocked_id.eq.${user.id}),and(blocker_id.eq.${user.id},blocked_id.eq.${currentUserId})`)
+      .single();
+
+    if (block) {
+      return Response.json({ error: "محظور", blocked: true }, { status: 403 });
+    }
+  }
+
   // إحصائيات
   const [
     { count: postsCount },
