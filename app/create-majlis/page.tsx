@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faImage, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
 import Avatar from "@/components/ui/Avatar";
@@ -216,7 +217,7 @@ export default function CreateMajlisPage() {
             {/* ملاحظة الخصوصية */}
             <div className="bg-primary/5 border border-primary/20 rounded-xl px-4 py-3" dir="rtl">
               <p className="text-white/60 font-tajawal text-sm leading-relaxed">
-                💡 المجلس سيكون <span className="text-primary font-bold">عاماً</span> بشكل افتراضي، يمكنك تحويله لخاص لاحقاً من إعدادات المجلس.
+                <FontAwesomeIcon icon={faLightbulb}/> المجلس سيكون <span className="text-primary font-bold">عاماً</span> بشكل افتراضي، يمكنك تحويله لخاص لاحقاً من إعدادات المجلس.
               </p>
             </div>
 

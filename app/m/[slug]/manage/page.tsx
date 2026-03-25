@@ -153,6 +153,22 @@ export default function ManageMajlisPage() {
               {data?.members.map((member) => (
                 <div key={member.user.id} className="bg-shade2 border border-border rounded-2xl p-4 flex items-center justify-between" dir="rtl">
                   <div className="flex items-center gap-3">
+                  <Avatar username={member.user.username} avatarUrl={member.user.avatar_url} size={40} />
+                    <div className="flex flex-col">
+                      <Link href={`/u/${member.user.username}`} className="text-white font-tajawal font-bold text-sm hover:underline">
+                        {member.user.username}
+                      </Link>
+                      <span className={`font-tajawal text-xs ${
+                        member.role === "owner" ? "text-yellow-400" :
+                        member.role === "moderator" ? "text-primary" : "text-white/40"
+                      }`}>
+                        {member.role === "owner" ? "المؤسس" : member.role === "moderator" ? "مشرف" : "عضو"}
+                      </span>
+                    </div>
+                    
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
                     {/* أزرار الإجراءات - للمؤسس فقط وليس على نفسه */}
                     {isOwner && member.user.id !== currentUserId && member.role !== "owner" && (
                       <div className="flex gap-2">
@@ -178,20 +194,7 @@ export default function ManageMajlisPage() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex flex-col items-end">
-                      <Link href={`/u/${member.user.username}`} className="text-white font-tajawal font-bold text-sm hover:underline">
-                        {member.user.username}
-                      </Link>
-                      <span className={`font-tajawal text-xs ${
-                        member.role === "owner" ? "text-yellow-400" :
-                        member.role === "moderator" ? "text-primary" : "text-white/40"
-                      }`}>
-                        {member.role === "owner" ? "المؤسس" : member.role === "moderator" ? "مشرف" : "عضو"}
-                      </span>
-                    </div>
-                    <Avatar username={member.user.username} avatarUrl={member.user.avatar_url} size={40} />
-                  </div>
+                  
                 </div>
               ))}
             </div>

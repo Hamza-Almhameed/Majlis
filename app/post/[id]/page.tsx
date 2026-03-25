@@ -48,7 +48,7 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ id: string; username: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ id: string; username: string; avatar_url: string } | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [likingPost, setLikingPost] = useState(false);
@@ -528,10 +528,8 @@ export default function PostPage() {
           {/* improved composer */}
           <div className="bg-shade1 border border-border rounded-2xl p-4 flex gap-3 items-start" dir="rtl">
           <Avatar
-            username={post.user.username}
-            avatarUrl={post.user.avatar_url}
-            lastSeen={post.user.last_seen}
-            showPresence={true}
+            username={currentUser?.username || ""}
+            avatarUrl={currentUser?.avatar_url || null}
             size={44}
           />
             <div className="flex-1">
@@ -626,9 +624,9 @@ export default function PostPage() {
                   <div className="flex items-start gap-3">
                     <Link href={`/u/${comment.user.username}`}>
                     <Avatar
-                      username={post.user.username}
-                      avatarUrl={post.user.avatar_url}
-                      lastSeen={post.user.last_seen}
+                      username={comment.user.username}
+                      avatarUrl={comment.user.avatar_url}
+                      lastSeen={comment.user.last_seen}
                       showPresence={true}
                       size={36}
                     />

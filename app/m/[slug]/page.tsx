@@ -6,7 +6,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight, faUsers, faLock, faGlobe,
-  faGear, faChartBar, faPen
+  faGear, faChartBar, faPen, faClipboardList
 } from "@fortawesome/free-solid-svg-icons";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
@@ -205,7 +205,7 @@ export default function MajlisPage() {
               {/* القواعد */}
               {majlis.rules && (
                 <div className="bg-shade3/50 rounded-xl p-3">
-                  <h3 className="text-white/60 font-tajawal text-xs mb-2">📋 قواعد المجلس</h3>
+                  <h3 className="text-white/60 font-tajawal text-s mb-2"><FontAwesomeIcon icon={faClipboardList} /> قواعد المجلس</h3>
                   <p className="text-white/50 font-tajawal text-xs leading-relaxed whitespace-pre-line">{majlis.rules}</p>
                 </div>
               )}
