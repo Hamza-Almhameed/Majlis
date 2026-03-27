@@ -4,7 +4,15 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowRight, faBan, faPen, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { 
+  faCalendar, 
+  faComment, 
+  faHeart, 
+  faStar,
+  faQuestionCircle // A fallback icon
+} from '@fortawesome/free-solid-svg-icons';
 import Avatar from "@/components/ui/Avatar";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
@@ -15,7 +23,7 @@ interface UserProfile {
   username: string;
   bio: string | null;
   avatar_url: string | null;
-  badges: string[];
+  badges: { id: string; name: string; icon: string; tier: string; requirement_type: string }[];
   created_at: string;
   posts_count: number;
   likes_received: number;
@@ -36,6 +44,16 @@ interface MajlisMember {
 }
 
 type Tab = "posts" | "likes" | "saved";
+
+const iconMap: Record<string, IconDefinition> = {
+  'account_age_days': faCalendar,
+  'comments_count': faComment,
+  'likes_given': faHeart,
+  'likes_received': faStar,
+  'majalis_created': faUsers,
+  'majalis_joined': faUsers,
+  'posts_count': faPen,
+};
 
 export default function ProfilePage() {
   const { username } = useParams<{ username: string }>();
@@ -191,9 +209,14 @@ export default function ProfilePage() {
               <div className="flex flex-col gap-2">
                 <h3 className="text-white/60 font-tajawal text-sm">الشارات</h3>
                 <div className="flex gap-2 flex-wrap">
-                  {profile.badges.slice(0, 5).map((badge, i) => (
-                    <span key={i} className="bg-primary/10 text-primary font-tajawal text-xs px-3 py-1 rounded-full border border-primary/20">
-                      {badge}
+                  {profile.badges.map((badge, i) => (
+                    <span key={i} className={`font-tajawal text-xs px-3 py-1 rounded-full border flex items-center gap-1 ${
+                      badge.tier === 'gold' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400' :
+                      badge.tier === 'silver' ? 'bg-slate-400/10 border-slate-400/30 text-slate-300' :
+                      'bg-amber-700/10 border-amber-700/30 text-amber-600'
+                    }`}>
+                      <FontAwesomeIcon icon={iconMap[badge.requirement_type] || faQuestionCircle} className="w-3 h-3" />
+                      {badge.name}
                     </span>
                   ))}
                 </div>

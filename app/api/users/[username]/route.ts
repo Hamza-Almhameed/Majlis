@@ -47,15 +47,21 @@ export async function GET(
     { count: postsCount },
     { count: likesReceived },
     { count: majalisCount },
+    { data: displayedBadges },
   ] = await Promise.all([
     supabase.from("posts").select("*", { count: "exact", head: true }).eq("user_id", user.id),
     supabase.from("likes").select("*", { count: "exact", head: true })
-      .in("post_id", 
+      .in("post_id",
         (await supabase.from("posts").select("id").eq("user_id", user.id)).data?.map(p => p.id) || []
       ),
     supabase.from("majalis_members").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+    supabase.from("user_badges")
+      .select("badge_id, display_order, badges(name, icon, tier, requirement_type)")
+      .eq("user_id", user.id)
+      .eq("is_displayed", true)
+      .order("display_order", { ascending: true }),
   ]);
-
+  
   return Response.json({
     ...user,
     last_seen: user.show_last_seen ? user.last_seen : null,
@@ -63,5 +69,12 @@ export async function GET(
     likes_received: likesReceived || 0,
     majalis_count: majalisCount || 0,
     is_own_profile: currentUserId === user.id,
+    badges: (displayedBadges || []).map((b: any) => ({
+      id: b.badge_id,
+      name: b.badges?.name,
+      icon: b.badges?.icon,
+      tier: b.badges?.tier,
+      requirement_type: b.badges?.requirement_type,
+    })),
   });
 }

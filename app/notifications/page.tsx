@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faHeart, faComment, faReply } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faHeart, faComment, faReply, faStar } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 import RightSidebar from "@/components/home/RightSidebar";
 import LeftSidebar from "@/components/home/LeftSidebar";
 
 interface Notification {
   id: string;
-  type: "like_post" | "comment_post" | "reply_comment" | "like_comment";
+  type: "like_post" | "comment_post" | "reply_comment" | "like_comment" | "badge_earned";
   is_read: boolean;
   created_at: string;
   post_id: string | null;
@@ -42,6 +42,7 @@ export default function NotificationsPage() {
       case "comment_post": return "علق على منشورك";
       case "reply_comment": return "رد على تعليقك";
       case "like_comment": return "أعجب بتعليقك";
+      case "badge_earned": return "حصلت على شارة جديدة!";
     }
   }
 
@@ -54,11 +55,14 @@ export default function NotificationsPage() {
         return <FontAwesomeIcon icon={faComment} className="w-4 h-4 text-primary" />;
       case "reply_comment":
         return <FontAwesomeIcon icon={faReply} className="w-4 h-4 text-primary" />;
+      case "badge_earned":
+        return <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-yellow-400" />;
     }
   }
 
   function getNotificationLink(n: Notification) {
     if (n.post_id) return `/post/${n.post_id}`;
+    if (n.type === "badge_earned") return "/badges";
     return "#";
   }
 

@@ -16,6 +16,7 @@ import {
   faCirclePlus,
   faUser,
   faRightFromBracket,
+  faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/ui/Avatar";
 
@@ -24,6 +25,7 @@ const menuItems = [
   { icon: faMessage, label: "المحادثات", href: "/messages" },
   { icon: faBell, label: "التنبيهات", href: "/notifications", badge: true },
   { icon: faUsers, label: "مجالسي", href: "/my-majalis" },
+  { icon: faTrophy, label: "الإنجازات", href: "/badges" },
   { icon: faBookmark, label: "المحفوظات", href: "/saved" },
   { icon: faGear, label: "الاعدادات والخصوصية", href: "/settings" },
 ];
