@@ -27,7 +27,6 @@ export default function CreateMajlisPage() {
 
   function handleNameChange(value: string) {
     setName(value);
-  // توليد slug تلقائي من الاسم
   const cleanedForSlug = value.trim().replace(/مجلس\s*/g, "").replace(/\s+/g, "-");
   if (!slug) {
     setSlug(cleanedForSlug);
@@ -96,7 +95,7 @@ export default function CreateMajlisPage() {
 
         <div className="flex-1 flex flex-col gap-4">
 
-          {/* هيدر */}
+
           <div className="flex items-center gap-3" dir="rtl">
             <button onClick={() => router.back()} className="text-white/50 hover:text-white transition-colors">
               <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" />
@@ -110,7 +109,7 @@ export default function CreateMajlisPage() {
               <p className="text-red-400 text-sm font-tajawal bg-red-400/10 px-4 py-2 rounded-lg">{error}</p>
             )}
 
-            {/* صورة الغلاف */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">صورة الغلاف <span className="text-white/30">(اختياري)</span></label>
               <div
@@ -137,7 +136,7 @@ export default function CreateMajlisPage() {
               <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
             </div>
 
-            {/* صورة المجلس */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">صورة المجلس <span className="text-red-400">*</span></label>
               <div className="flex items-center gap-4">
@@ -159,7 +158,7 @@ export default function CreateMajlisPage() {
               <input ref={iconInputRef} type="file" accept="image/*" className="hidden" onChange={handleIconChange} />
             </div>
 
-            {/* الاسم */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">اسم المجلس <span className="text-red-400">*</span></label>
               <input
@@ -171,7 +170,7 @@ export default function CreateMajlisPage() {
               />
             </div>
 
-            {/* الـ Slug */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">رابط المجلس <span className="text-red-400">*</span></label>
               <div className="flex items-center gap-2 bg-shade3 rounded-xl px-4 py-3 border border-transparent focus-within:border-border transition-colors">
@@ -187,7 +186,7 @@ export default function CreateMajlisPage() {
               <p className="text-white/30 font-tajawal text-xs">الرابط لا يمكن تغييره لاحقاً</p>
             </div>
 
-            {/* الوصف */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">وصف المجلس <span className="text-red-400">*</span></label>
               <textarea
@@ -201,7 +200,7 @@ export default function CreateMajlisPage() {
               <p className="text-white/30 font-tajawal text-xs text-left">{description.length}/500</p>
             </div>
 
-            {/* القواعد */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">قواعد المجلس <span className="text-white/30">(اختياري)</span></label>
               <textarea
@@ -214,14 +213,14 @@ export default function CreateMajlisPage() {
               />
             </div>
 
-            {/* ملاحظة الخصوصية */}
+
             <div className="bg-primary/5 border border-primary/20 rounded-xl px-4 py-3" dir="rtl">
               <p className="text-white/60 font-tajawal text-sm leading-relaxed">
                 <FontAwesomeIcon icon={faLightbulb}/> المجلس سيكون <span className="text-primary font-bold">عاماً</span> بشكل افتراضي، يمكنك تحويله لخاص لاحقاً من إعدادات المجلس.
               </p>
             </div>
 
-            {/* زر الإنشاء */}
+
             <button
               onClick={handleSubmit}
               disabled={loading}

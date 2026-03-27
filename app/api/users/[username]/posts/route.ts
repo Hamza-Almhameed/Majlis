@@ -13,7 +13,7 @@ export async function GET(
   const from = page * limit;
   const to = from + limit - 1;
 
-  // جيب المستخدم الحالي
+  
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   let currentUserId: string | null = null;
@@ -30,7 +30,7 @@ export async function GET(
 
   if (!user) return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
 
-  // جيب المجالس الخاصة
+  
   const { data: privateMajalis } = await supabase
     .from("majalis")
     .select("id")
@@ -38,7 +38,7 @@ export async function GET(
 
   const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
 
-  // جيب المجالس الخاصة اللي المستخدم الحالي عضو فيها
+  
   let userPrivateMajalisIds: string[] = [];
   if (currentUserId && privateMajalisIds.length > 0) {
     const { data: memberOf } = await supabase
@@ -54,7 +54,7 @@ export async function GET(
     (id) => !userPrivateMajalisIds.includes(id)
   );
 
-  // بناء الـ query
+  
   let query = supabase
     .from("posts")
     .select(`
@@ -69,7 +69,7 @@ export async function GET(
     .order("created_at", { ascending: false })
     .range(from, to);
 
-  // استثني منشورات المجالس الخاصة اللي المستخدم مش عضو فيها
+    
   if (excludedMajalisIds.length > 0) {
     query = query.or(
       `majlis_id.is.null,majlis_id.not.in.(${excludedMajalisIds.join(",")})`

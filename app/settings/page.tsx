@@ -249,7 +249,7 @@ export default function SettingsPage() {
 
         <div className="flex-1 flex flex-col gap-4">
 
-          {/* هيدر */}
+
           <div className="flex items-center gap-3" dir="rtl">
             <button onClick={() => router.back()} className="text-white/50 hover:text-white transition-colors p-2 rounded">
               <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" />
@@ -282,7 +282,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* الأقسام */}
+
           {settingsSections.map((section) => (
             <div key={section.title} className="flex flex-col gap-3" dir="rtl">
               <h2 className="text-white/40 font-tajawal text-xs px-2">{section.title}</h2>

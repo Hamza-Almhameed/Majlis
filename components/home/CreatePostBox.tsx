@@ -43,7 +43,7 @@ export default function CreatePostBox({ username, avatarUrl , onPost, majlisId, 
       className="mb-4 rounded-lg p-4 bg-shade1 border border-shade2 shadow-sm ring-1 ring-white/6"
       dir="rtl"
     >
-      {/* composer header */}
+      
       <div className="flex items-center gap-3">
         <Avatar username={username} avatarUrl={avatarUrl} size={40} />
         <div className="flex-1">
@@ -60,7 +60,7 @@ export default function CreatePostBox({ username, avatarUrl , onPost, majlisId, 
         </div>
       </div>
 
-      {/* actions */}
+
       <div className="mt-4 flex items-center justify-between">
         <button
           onClick={handleQuickPost}

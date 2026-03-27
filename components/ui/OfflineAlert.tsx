@@ -25,7 +25,7 @@ export default function OfflineAlert() {
   if (isOnline) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-red-500/90 backdrop-blur-sm text-white font-tajawal px-5 py-3 rounded-xl shadow-lg" dir="rtl">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-red-500/70 backdrop-blur-sm text-white font-tajawal px-5 py-3 rounded-xl shadow-lg" dir="rtl">
       <FontAwesomeIcon icon={faWifi} className="w-4 h-4" />
       <span className="text-sm font-bold">لا يوجد اتصال بالإنترنت</span>
     </div>

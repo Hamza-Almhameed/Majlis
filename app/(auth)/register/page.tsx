@@ -50,20 +50,20 @@ export default function RegisterPage() {
   return (
     <main className="bg-background min-h-screen flex flex-col items-center justify-center gap-8">
       
-      {/* اللوغو */}
+      {/* logo */}
       <h1 className="font-ashkal text-primary text-6xl select-none">مجلس</h1>
 
-      {/* الفورم */}
+      {/* main form */}
       <div className="flex flex-col gap-3 w-80">
 
-        {/* رسالة الخطأ */}
+        {/* error message */}
         {error && (
           <p className="text-red-400 text-sm text-center font-tajawal bg-red-400/10 py-2 px-4 rounded-lg">
             {error}
           </p>
         )}
         
-        {/* اسم المستخدم */}
+        
         <div className="bg-shade2 border border-border rounded-lg px-4 py-3 flex items-center gap-2">
             <FontAwesomeIcon icon={faAt} className="text-white/40 w-5 h-5" />
             <input
@@ -76,7 +76,7 @@ export default function RegisterPage() {
         </div>
         
 
-        {/* كلمة المرور */}
+        
         <div className="bg-shade2 border border-border rounded-lg px-4 py-3 flex items-center gap-2">
           <button onClick={() => setShowPassword(!showPassword)}>
             <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="text-white/40 w-5 h-5" />
@@ -90,7 +90,7 @@ export default function RegisterPage() {
           />
         </div>
 
-        {/* تأكيد كلمة المرور */}
+        
         <div className="bg-shade2 border border-border rounded-lg px-4 py-3 flex items-center gap-2">
           <input
             type={showPassword ? "text" : "password"}
@@ -101,7 +101,7 @@ export default function RegisterPage() {
           />
         </div>
 
-        {/* زر التسجيل */}
+        
         <button
           onClick={handleRegister}
           disabled={loading}
@@ -110,7 +110,7 @@ export default function RegisterPage() {
           {loading ? "جاري الإنشاء..." : "انشاء الحساب"}
         </button>
 
-        {/* رابط تسجيل الدخول */}
+        
         <p className="text-white/40 text-center text-sm font-tajawal">
           أو يمكنك{" "}
           <Link href="/login" className="text-primary">
@@ -119,7 +119,7 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      {/* نص الخصوصية */}
+      
       <p className="text-white/20 text-xs text-center font-tajawal absolute bottom-6">
         من خلال تسجيل دخولك فإنك توافق على{" "}
         <Link href="/privacy" className="text-white/40">

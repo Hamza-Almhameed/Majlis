@@ -127,7 +127,7 @@ export default function ProfilePage() {
 
         <div className="flex-1 flex flex-col gap-4">
 
-          {/* هيدر */}
+
           <div className="flex items-center gap-3" dir="rtl">
             <button onClick={() => router.back()} className="text-white/50 hover:text-white transition-colors">
               <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" />
@@ -135,7 +135,7 @@ export default function ProfilePage() {
             <h1 className="text-white font-tajawal font-bold text-xl">{profile.username}</h1>
           </div>
 
-          {/* بطاقة البروفايل */}
+
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-4" dir="rtl">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
@@ -183,12 +183,12 @@ export default function ProfilePage() {
             </div>
             </div>
 
-            {/* البايو */}
+
             {profile.bio && (
               <p className="text-white/80 font-tajawal leading-relaxed whitespace-pre-wrap">{profile.bio}</p>
             )}
 
-            {/* الإحصائيات */}
+
             <div className="flex items-center gap-6 py-3 border-y border-border">
               <div className="flex flex-col items-center gap-1">
                 <span className="text-white font-tajawal font-bold text-lg">{profile.posts_count}</span>
@@ -204,7 +204,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* الشارات */}
+
             {profile.badges && profile.badges.length > 0 && (
               <div className="flex flex-col gap-2">
                 <h3 className="text-white/60 font-tajawal text-sm">الشارات</h3>
@@ -223,7 +223,7 @@ export default function ProfilePage() {
               </div>
             )}
 
-            {/* المجالس */}
+
             {majalis.length > 0 && (
               <div className="flex flex-col gap-2">
                 <h3 className="text-white/60 font-tajawal text-sm">المجالس</h3>
@@ -240,7 +240,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* التبويبات */}
+
           <div className="flex border-b border-border" dir="rtl">
             {[
               { key: "posts", label: "المنشورات" },
@@ -263,7 +263,7 @@ export default function ProfilePage() {
             ))}
           </div>
 
-          {/* محتوى التبويب */}
+
           {activeTab === "posts" && (
             <Feed
               key={`${username}-posts`}

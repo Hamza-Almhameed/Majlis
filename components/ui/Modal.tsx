@@ -45,7 +45,6 @@ export default function Modal({ title, children, onClose }: {
         <div className="border-t border-border/50 -mx-6 px-6 pt-4 max-h-[70vh] overflow-auto">
           {children}
         </div>
-        {/* footer area (optional) could be added by children */}
       </div>
     </div>
   );

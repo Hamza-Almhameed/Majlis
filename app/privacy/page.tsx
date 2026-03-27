@@ -43,7 +43,7 @@ export default function PrivacyPage() {
 
         <div className="flex-1 flex flex-col gap-4" dir="rtl">
 
-          {/* الهيدر */}
+
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-2">
             <h1 className="text-white font-tajawal font-bold text-2xl">سياسة الخصوصية والشروط</h1>
             <p className="text-white/40 font-tajawal text-sm">آخر تحديث: مارس 2026</p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          {/* الأقسام */}
+
           <div className="bg-shade2 border border-border rounded-2xl overflow-hidden">
             {sections.map((section, i) => (
               <div key={i}>

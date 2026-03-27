@@ -32,7 +32,7 @@ export default function NotificationsPage() {
         setLoading(false);
       });
 
-    // علم كل الإشعارات كمقروءة
+
     fetch("/api/notifications", { method: "PATCH" });
   }, []);
 

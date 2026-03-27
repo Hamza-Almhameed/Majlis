@@ -31,14 +31,14 @@ export default function SavedPage() {
     <main className="bg-background min-h-screen p-6">
       <div className="flex gap-6 w-full mx-auto">
 
-        {/* يسار  */}
+
         <div className="w-72 shrink-0">
           <LeftSidebar />
         </div>
 
-        {/* وسط */}
+
         <div className="flex-1 flex flex-col gap-4">
-          {/* هيدر */}
+          
           <div className="flex items-center gap-3" dir="rtl">
             <button
               onClick={() => router.back()}
@@ -73,7 +73,7 @@ export default function SavedPage() {
 
         
 
-        {/* يمين */}
+
         <div className="w-72 shrink-0">
           <RightSidebar />
         </div>

@@ -9,7 +9,6 @@ interface AvatarProps {
   export default function Avatar({ username, avatarUrl, size = 36, lastSeen, showPresence = false }: AvatarProps) {
     const firstLetter = username?.charAt(0) || "؟";
   
-    // توليد لون ثابت بناءً على اسم المستخدم
     const colors = [
       "#E63946", "#2A9D8F", "#E9C46A", "#F4A261",
       "#264653", "#6A4C93", "#1982C4", "#8AC926",
@@ -17,28 +16,27 @@ interface AvatarProps {
     const colorIndex = username?.charCodeAt(0) % colors.length || 0;
     const bgColor = colors[colorIndex];
 
-    // تحقق إذا كان المستخدم متصل (آخر تواجد خلال 3 دقائق)
-  const isOnline = lastSeen
-  ? (Date.now() - new Date(lastSeen).getTime()) < 3 * 60 * 1000
-  : false;
+    const isOnline = lastSeen
+    ? (Date.now() - new Date(lastSeen).getTime()) < 3 * 60 * 1000
+    : false;
   
-  const avatar = avatarUrl ? (
-    <img
-      src={avatarUrl}
-      alt={username}
-      width={size}
-      height={size}
-      className="rounded-full object-cover"
-      style={{ width: size, height: size }}
-    />
-  ) : (
-    <div
-      className="rounded-full flex items-center justify-center font-tajawal text-white select-none"
-      style={{ width: size, height: size, backgroundColor: bgColor, fontSize: size * 0.45 }}
-    >
-      {firstLetter}
-    </div>
-  );
+    const avatar = avatarUrl ? (
+      <img
+        src={avatarUrl}
+        alt={username}
+        width={size}
+        height={size}
+        className="rounded-full object-cover"
+        style={{ width: size, height: size }}
+      />
+    ) : (
+      <div
+        className="rounded-full flex items-center justify-center font-tajawal text-white select-none"
+        style={{ width: size, height: size, backgroundColor: bgColor, fontSize: size * 0.45 }}
+      >
+        {firstLetter}
+      </div>
+    );
 
   if (!showPresence) return avatar;
 

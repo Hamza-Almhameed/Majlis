@@ -112,7 +112,7 @@ export default function ManageMajlisPage() {
             )}
           </div>
 
-          {/* التبويبات */}
+
           <div className="flex border-b border-border" dir="rtl">
             {[
               { key: "stats", label: "الإحصائيات", icon: faChartBar },
@@ -131,7 +131,7 @@ export default function ManageMajlisPage() {
             ))}
           </div>
 
-          {/* الإحصائيات */}
+
           {activeTab === "stats" && (
             <div className="grid grid-cols-3 gap-4" dir="rtl">
               {[
@@ -147,7 +147,7 @@ export default function ManageMajlisPage() {
             </div>
           )}
 
-          {/* الأعضاء */}
+
           {activeTab === "members" && (
             <div className="flex flex-col gap-2">
               {data?.members.map((member) => (
@@ -169,7 +169,7 @@ export default function ManageMajlisPage() {
                   </div>
                   
                   <div className="flex items-center gap-3">
-                    {/* أزرار الإجراءات - للمؤسس فقط وليس على نفسه */}
+                    
                     {isOwner && member.user.id !== currentUserId && member.role !== "owner" && (
                       <div className="flex gap-2">
                         <button
@@ -200,7 +200,7 @@ export default function ManageMajlisPage() {
             </div>
           )}
 
-          {/* طلبات الانضمام */}
+
           {activeTab === "requests" && (
             <div className="flex flex-col gap-2">
               {data?.joinRequests.length === 0 ? (

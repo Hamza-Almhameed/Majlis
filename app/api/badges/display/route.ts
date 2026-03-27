@@ -10,7 +10,7 @@ export async function PATCH(request: Request) {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
   const { badge_id, is_displayed } = await request.json();
 
-  // تحقق إن المستخدم حاصل على الشارة
+
   const { data: userBadge } = await supabase
     .from("user_badges")
     .select("badge_id, is_displayed")
@@ -21,7 +21,6 @@ export async function PATCH(request: Request) {
   if (!userBadge) return Response.json({ error: "لم تحصل على هذه الشارة" }, { status: 403 });
 
   if (is_displayed) {
-    // تحقق إن ما تجاوز 5 شارات
     const { count } = await supabase
       .from("user_badges")
       .select("*", { count: "exact", head: true })

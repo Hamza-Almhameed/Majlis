@@ -83,7 +83,7 @@ export default function EditProfilePage() {
       <div className="flex gap-6 w-full max-w-6xl mr-auto">
         <div className="flex-1 flex flex-col gap-4">
 
-          {/* هيدر */}
+
           <div className="flex items-center gap-3" dir="rtl">
             <button onClick={() => router.back()} className="text-white/50 hover:text-white transition-colors">
               <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" />
@@ -93,7 +93,7 @@ export default function EditProfilePage() {
 
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-5" dir="rtl">
 
-            {/* رسائل */}
+
             {error && (
               <p className="text-red-400 text-sm font-tajawal bg-red-400/10 px-4 py-2 rounded-lg">{error}</p>
             )}
@@ -101,7 +101,7 @@ export default function EditProfilePage() {
               <p className="text-primary text-sm font-tajawal bg-primary/10 px-4 py-2 rounded-lg">{success}</p>
             )}
 
-            {/* صورة البروفايل */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">صورة البروفايل</label>
               <div className="flex items-center gap-4">
@@ -132,7 +132,7 @@ export default function EditProfilePage() {
               </div>
             </div>
 
-            {/* اسم المستخدم - للعرض فقط */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">اسم المستخدم</label>
               <div className="bg-shade3/50 border border-border rounded-xl px-4 py-3 text-white/40 font-tajawal cursor-not-allowed">
@@ -141,7 +141,7 @@ export default function EditProfilePage() {
               <p className="text-white/30 font-tajawal text-xs">اسم المستخدم لا يمكن تغييره حالياً</p>
             </div>
 
-            {/* النبذة الشخصية */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">النبذة الشخصية</label>
               <textarea
@@ -155,7 +155,7 @@ export default function EditProfilePage() {
               <p className="text-white/30 font-tajawal text-xs text-left">{bio.length}/200</p>
             </div>
 
-            {/* الإيميل */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">
                 البريد الإلكتروني
@@ -171,7 +171,7 @@ export default function EditProfilePage() {
               />
             </div>
 
-            {/* زر الحفظ */}
+
             <div className="flex justify-start pt-2">
               <button
                 onClick={handleSave}

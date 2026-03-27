@@ -158,7 +158,7 @@ export default function PostPage() {
       const parsed = JSON.parse(media_url);
       if (Array.isArray(parsed)) return parsed.filter(Boolean);
     } catch {
-      // not JSON — treat as single URL string
+      
     }
     return [media_url];
   }
@@ -525,7 +525,7 @@ export default function PostPage() {
             </div>
           </article>
 
-          {/* improved composer */}
+
           <div className="bg-shade1 border border-border rounded-2xl p-4 flex gap-3 items-start" dir="rtl">
           <Avatar
             username={currentUser?.username || ""}
@@ -572,9 +572,8 @@ export default function PostPage() {
             </div>
           </div>
 
-          {/* improved comment list */}
+
           <div className="flex flex-col gap-3">
-            {/* sort control (custom dropdown) */}
             <div className="flex items-center justify-between gap-3 px-2" dir="rtl">
               <div className="text-white/60 font-tajawal text-sm">ترتيب التعليقات:</div>
               <div className="relative" ref={sortRef}>
@@ -717,7 +716,6 @@ export default function PostPage() {
                             <span className="text-white/40 font-tajawal text-xs">{timeAgo(reply.created_at)}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            {/* زر الحذف لو كان الرد للمستخدم الحالي */}
                             {currentUser?.id === reply.user_id && (
                               <button
                                 onClick={() => handleDeleteComment(reply.id)}

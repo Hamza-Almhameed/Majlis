@@ -117,7 +117,7 @@ export default function BadgesPage() {
             <span className="text-white/40 font-tajawal text-sm">({displayedCount}/5 معروضة)</span>
           </div>
 
-          {/* الشارات الفعالة */}
+          {/* active badges */}
           {activeBadges.length > 0 && (
             <Section title="الشارات الفعالة" emoji="star" color="text-primary">
               {activeBadges.map((badge) => (
@@ -132,7 +132,7 @@ export default function BadgesPage() {
             </Section>
           )}
 
-          {/* الشارات المنجزة */}
+          {/* earned badges */}
           {earnedBadges.length > 0 && (
             <Section title="الشارات المنجزة" emoji="trophy" color="text-yellow-400">
               {earnedBadges.map((badge) => (
@@ -147,7 +147,7 @@ export default function BadgesPage() {
             </Section>
           )}
 
-          {/* الشارات المقفلة */}
+          {/* locked badges */}
           {lockedBadges.length > 0 && (
             <Section title="الشارات المقفلة" emoji="lock" color="text-white/40">
               {lockedBadges.map((badge) => (

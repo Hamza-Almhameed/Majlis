@@ -105,17 +105,17 @@ export default function MajlisPage() {
 
         <div className="flex-1 flex flex-col gap-4">
 
-          {/* هيدر */}
+
           <div className="flex items-center gap-3" dir="rtl">
             <button onClick={() => router.back()} className="text-white/50 hover:text-white transition-colors">
               <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" />
             </button>
           </div>
 
-          {/* بطاقة المجلس */}
+
           <div className="bg-shade2 border border-border rounded-2xl overflow-hidden">
 
-            {/* صورة الغلاف */}
+
             {majlis.cover_url ? (
               <img src={majlis.cover_url} alt="غلاف" className="w-full h-36 object-cover" />
             ) : (
@@ -123,7 +123,7 @@ export default function MajlisPage() {
             )}
 
             <div className="p-5 flex flex-col gap-4" dir="rtl">
-              {/* المعلومات الأساسية */}
+
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
                 {majlis.icon_url ? (
@@ -154,7 +154,7 @@ export default function MajlisPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {/* أزرار حسب الدور */}
+
                   {isOwner ? (
                     <div className="flex gap-2">
                       <Link href={`/m/${slug}/edit`}
@@ -199,10 +199,10 @@ export default function MajlisPage() {
                 </div>
               </div>
 
-              {/* الوصف */}
+
               <p className="text-white/60 font-tajawal text-sm leading-relaxed whitespace-pre-wrap">{majlis.description}</p>
 
-              {/* القواعد */}
+
               {majlis.rules && (
                 <div className="bg-shade3/50 rounded-xl p-3">
                   <h3 className="text-white/60 font-tajawal text-s mb-2"><FontAwesomeIcon icon={faClipboardList} /> قواعد المجلس</h3>
@@ -212,7 +212,7 @@ export default function MajlisPage() {
             </div>
           </div>
 
-          {/* المنشورات */}
+
           {majlis.is_private && !isMember ? (
             <div className="bg-shade2 border border-border rounded-2xl p-8 text-center" dir="rtl">
               <FontAwesomeIcon icon={faLock} className="w-10 h-10 text-white/20 mb-3" />
@@ -220,21 +220,21 @@ export default function MajlisPage() {
             </div>
           ) : (
             <>
-    {canPost && (
-      <CreatePostBox
-        username={currentUser?.username || ""}
-        avatarUrl={currentUser?.avatar_url}
-        majlisId={majlis.id}
-        majlisIsPrivate={majlis.is_private}
-        onPost={() => setFeedKey((k) => k + 1)}
-      />
-    )}
-    <Feed
-      key={feedKey}
-      currentUserId={currentUser?.id}
-      majlisSlug={slug}
-    />
-  </>
+              {canPost && (
+                <CreatePostBox
+                  username={currentUser?.username || ""}
+                  avatarUrl={currentUser?.avatar_url}
+                  majlisId={majlis.id}
+                  majlisIsPrivate={majlis.is_private}
+                  onPost={() => setFeedKey((k) => k + 1)}
+                />
+              )}
+              <Feed
+                key={feedKey}
+                currentUserId={currentUser?.id}
+                majlisSlug={slug}
+              />
+            </>
           )}
         </div>
 

@@ -54,24 +54,24 @@ export async function GET() {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
 
-  // جيب كل الشارات
+
   const { data: allBadges } = await supabase
     .from("badges")
     .select("*")
     .order("requirement_value", { ascending: true });
 
-  // جيب شارات المستخدم
+
   const { data: userBadges } = await supabase
     .from("user_badges")
     .select("badge_id, earned_at, is_displayed, display_order")
     .eq("user_id", decoded.userId);
 
-  // جيب إحصائيات المستخدم
+
   const stats = await getUserStats(decoded.userId);
 
   const userBadgesMap = new Map(userBadges?.map((b) => [b.badge_id, b]) || []);
 
-  // تحقق من شارات جديدة وأضفها
+
   const newlyEarned: string[] = [];
   for (const badge of allBadges || []) {
     const progress = getProgress(stats, badge.requirement_type, badge.requirement_value);
@@ -86,7 +86,7 @@ export async function GET() {
     }
   }
 
-  // أرسل إشعارات للشارات الجديدة
+
   for (const badgeId of newlyEarned) {
     const badge = allBadges?.find((b) => b.id === badgeId);
     if (badge) {
@@ -100,7 +100,7 @@ export async function GET() {
     }
   }
 
-  // رتب الشارات
+
   const badgesWithProgress = (allBadges || []).map((badge) => {
     const userBadge = userBadgesMap.get(badge.id);
     const progress = getProgress(stats, badge.requirement_type, badge.requirement_value);

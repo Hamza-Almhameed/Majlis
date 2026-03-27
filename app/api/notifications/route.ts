@@ -30,7 +30,6 @@ export async function GET() {
 }
 
 export async function PATCH() {
-  // تعليم كل الإشعارات كمقروءة
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   if (!token) return Response.json({ error: "غير مسجل" }, { status: 401 });

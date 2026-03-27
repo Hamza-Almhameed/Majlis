@@ -47,7 +47,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
   const [loading, setLoading] = useState(!initialPosts);
   
 
-  // local UI state maps
+  // local ui state maps
   const [liked, setLiked] = useState<Record<string, boolean>>(() => {
     if (!initialPosts) return {};
     const map: Record<string, boolean> = {};
@@ -117,14 +117,14 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
     setLbIndex(0);
   }
 
-  // helper: normalize media_url into array of urls
+  
   function parseMediaUrls(media_url: string | null): string[] {
     if (!media_url) return [];
     try {
       const parsed = JSON.parse(media_url);
       if (Array.isArray(parsed)) return parsed.filter(Boolean);
     } catch {
-      // not JSON — treat as single URL string
+      
     }
     return [media_url];
   }
@@ -159,7 +159,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
       })
       .catch(() => setLoading(false));
 
-      // احذف المنشورات المنتهية
+      //delete expired temporary posts
       fetch("/api/posts/cleanup", { method: "POST" });
   }, []);
 
@@ -204,7 +204,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
     return () => observer.disconnect();
   }, [hasMore, loading, loadingMore]);
 
-  // إغلاق القائمة لما يضغط برا
+  
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -289,7 +289,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
             aria-labelledby={`post-${post.id}-title`}
             dir="rtl"
           >
-            {/* header */}
+            
             <header className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <Link href={`/u/${post.user.username}`} className="rounded-full shrink-0" aria-label={`${post.user.username} - ملف المستخدم`}>
@@ -322,9 +322,8 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
                 </div>
               </div>
 
-              {/* optional small actions (on header) */}
+
               <div className="flex items-center gap-2">
-                {/* optional small actions (on header) */}
                 <div className="relative" ref={openMenuId === post.id ? menuRef : null}>
                   <button
                     onClick={(e) => {
@@ -393,7 +392,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
               </div>
             </header>
 
-            {/* content */}
+
             {editingPostId === post.id ? (
               <div className="flex flex-col gap-2" dir="rtl">
                 <textarea
@@ -444,7 +443,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
               </div>
             )}
 
-            {/* media */}
+
             {post.media_type === "image" && post.media_url && (() => {
               const images = parseMediaUrls(post.media_url);
               if (images.length === 0) return null;
@@ -495,7 +494,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
                 );
               }
 
-              // 4 or more: 2x2 grid, show +N overlay on last tile if more
+              // 4 or more: 2x2 grid
               const display = images.slice(0, 4);
               const extra = images.length - 4;
               return (
@@ -514,7 +513,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
               );
             })()}
 
-            {/* lightbox invocation */}
+
             {lightboxOpen && (
               <ImageLightbox
                 images={lbImages}
@@ -523,9 +522,8 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
               />
             )}
 
-            {/* actions */}
+
             <footer className="flex items-stretch pt-3 border-t border-border" dir="ltr" aria-label="post actions">
-              {/* left: save (fills left column) */}
               <div className="flex-1 flex items-center justify-center">
                 <button
                   onClick={() => toggleBookmark(post.id)}
@@ -545,7 +543,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
                 </button>
               </div>
 
-              {/* middle: comment (fills center column) with left/right thin borders as separators */}
+
               <div className="flex-1 flex items-center justify-center border-x border-border/60">
                 <button
                   onClick={() => (window.location.href = `/post/${post.id}`)}
@@ -557,7 +555,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
                 </button>
               </div>
 
-              {/* right: like (fills right column) */}
+
               <div className="flex-1 flex items-center justify-center">
                 <button
                   onClick={() => toggleLike(post.id)}
@@ -581,7 +579,7 @@ export default function Feed({ currentUserId, onDelete, initialPosts, disablePag
         );
       })}
 
-      {/* مؤشر التحميل */}
+
       <div ref={loaderRef} className="py-4 text-center">
         {hasMore ? (
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />

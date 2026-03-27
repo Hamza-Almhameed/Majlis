@@ -36,10 +36,10 @@ export default function Home() {
   return (
     <main className="bg-background min-h-screen flex justify-center p-6">
       <div className="flex flex-row-reverse gap-6 w-full">
-        {/* يسار - فارغ مؤقتاً */}
+        
         <div className="w-72 min-w-[18rem]" />
         <LeftSidebar />
-        {/* وسط -  */}
+        
         <div className="flex-1">
         {user && (
             <CreatePostBox
@@ -50,7 +50,7 @@ export default function Home() {
           )}
           <Feed key={feedKey} currentUserId={user?.id} onDelete={refreshFeed}/>
         </div>
-        {/* placeholder to reserve space for the fixed right sidebar */}
+        
         <div className="w-72 min-w-[18rem]" aria-hidden="true" />
         <RightSidebar />
       </div>

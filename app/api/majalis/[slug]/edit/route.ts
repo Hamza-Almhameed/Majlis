@@ -13,7 +13,7 @@ export async function PATCH(
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
 
-  // تحقق إن المستخدم هو المؤسس
+  
   const { data: majlis } = await supabase
     .from("majalis")
     .select("id, created_by")
@@ -37,7 +37,7 @@ export async function PATCH(
   if (formData.has("rules")) updates.rules = rules?.trim() || null;
   updates.is_private = is_private;
 
-  // رفع صورة المجلس
+  
   if (iconFile && iconFile.size > 0) {
     const ext = iconFile.name.split(".").pop();
     const fileName = `majalis/icons/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
@@ -51,7 +51,7 @@ export async function PATCH(
     }
   }
 
-  // رفع صورة الغلاف
+  
   if (coverFile && coverFile.size > 0) {
     const ext = coverFile.name.split(".").pop();
     const fileName = `majalis/covers/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;

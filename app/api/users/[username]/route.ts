@@ -19,7 +19,7 @@ export async function GET(
     } catch {}
   }
 
-  // جيب بيانات المستخدم
+  
   const { data: user, error } = await supabase
     .from("users")
     .select("id, username, bio, avatar_url, badges, created_at, last_seen, show_last_seen")
@@ -42,7 +42,7 @@ export async function GET(
     }
   }
 
-  // إحصائيات
+  
   const [
     { count: postsCount },
     { count: likesReceived },

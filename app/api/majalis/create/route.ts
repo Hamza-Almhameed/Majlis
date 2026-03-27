@@ -21,13 +21,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "جميع الحقول المطلوبة يجب تعبئتها" }, { status: 400 });
   }
 
-  // تحقق من الـ slug
+
   const slugRegex = /^[\u0600-\u0652\u0660-\u0669a-zA-Z0-9_-]+$/;
   if (!slugRegex.test(slug)) {
     return Response.json({ error: "الرابط يجب أن يحتوي على أحرف وأرقام وشرطات فقط" }, { status: 400 });
   }
 
-  // تحقق إن الـ slug ما موجود
+
   const { data: existing } = await supabase
     .from("majalis").select("id").eq("slug", slug).single();
 
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "هذا الرابط مستخدم مسبقاً" }, { status: 409 });
   }
 
-  // رفع صورة المجلس
+
   let icon_url: string | null = null;
   if (iconFile && iconFile.size > 0) {
     const ext = iconFile.name.split(".").pop();
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
   }
 
-  // رفع صورة الغلاف
+  
   let cover_url: string | null = null;
   if (coverFile && coverFile.size > 0) {
     const ext = coverFile.name.split(".").pop();
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     }
   }
 
-  // إنشاء المجلس
+  
   const { data: majlis, error } = await supabase
     .from("majalis")
     .insert({
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
   if (error) return Response.json({ error: "حدث خطأ" }, { status: 500 });
 
-  // أضف المؤسس كعضو بدور owner
+  
   await supabase.from("majalis_members").insert({
     user_id: decoded.userId,
     majlis_id: majlis.id,

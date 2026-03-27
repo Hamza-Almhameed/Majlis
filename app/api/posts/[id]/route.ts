@@ -19,7 +19,7 @@ export async function DELETE(
     userId: string;
   };
 
-  // جيب بيانات المنشور مع الصور
+  
   const { data: post } = await supabase
     .from("posts")
     .select("user_id, media_url, media_type")
@@ -30,7 +30,7 @@ export async function DELETE(
     return Response.json({ error: "غير مصرح" }, { status: 403 });
   }
 
-  // احذف الصور من الـ bucket لو موجودة
+  
   if (post.media_type === "image" && post.media_url) {
     try {
       const urls: string[] = JSON.parse(post.media_url);
@@ -53,7 +53,7 @@ export async function DELETE(
     }
   }
 
-  // احذف المنشور
+  
   await supabase.from("posts").delete().eq("id", id);
 
   return Response.json({ message: "تم الحذف" });
@@ -84,7 +84,7 @@ export async function PATCH(
       return Response.json({ error: "المحتوى لا يمكن أن يكون فارغاً" }, { status: 400 });
     }
   
-    // تحقق إن المنشور للمستخدم الحالي
+    
     const { data: post } = await supabase
       .from("posts")
       .select("user_id")
@@ -108,7 +108,7 @@ export async function PATCH(
   }
 
 
-//get post details
+  
   export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }

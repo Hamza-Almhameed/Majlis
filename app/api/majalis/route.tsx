@@ -18,7 +18,6 @@ export async function GET(request: Request) {
   }
 
   if (myMajalis && currentUserId) {
-    // جيب مجالس المستخدم فقط
     const { data, error } = await supabase
       .from("majalis_members")
       .select(`majlis:majalis!majalis_members_majlis_id_fkey(id, name, slug)`)
@@ -29,7 +28,7 @@ export async function GET(request: Request) {
     return Response.json(data?.map((m) => m.majlis) || []);
   }
 
-  // المجالس العامة للـ LeftSidebar
+
   const { data, error } = await supabase
     .from("majalis")
     .select("id, name, slug, description, icon_url, cover_url, members_count")

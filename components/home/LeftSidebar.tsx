@@ -60,7 +60,7 @@ export default function LeftSidebar() {
       aria-label="شريط جانبي - البحث والمجالس"
     >
 
-      {/* البحث */}
+
       <div className="relative">
         <div className="flex items-center gap-2 bg-shade2 border border-border rounded-lg px-3 py-2">
           <FontAwesomeIcon icon={faMagnifyingGlass} className="w-4 h-4 text-white/40" />
@@ -74,7 +74,7 @@ export default function LeftSidebar() {
           />
         </div>
 
-        {/* نتائج البحث */}
+
         {(results.length > 0 || searching) && (
           <div className="absolute top-12 left-0 right-0 bg-shade2 border border-border rounded-lg overflow-hidden z-20 shadow-md">
             {searching ? (
@@ -103,68 +103,67 @@ export default function LeftSidebar() {
         )}
       </div>
 
-      {/* المجالس المقترحة */}
-      {/* المجالس المقترحة */}
-<div className="bg-shade2 border border-border rounded-xl">
-  <h2 className="text-white font-tajawal font-bold px-4 py-3 border-b border-border text-sm flex items-center">
-  <span className="text-primary text-2xl ml-2.5">✦</span>
-    المجالس المقترحة
-  </h2>
-  <div className="flex flex-col">
-    {majalis.map((majlis) => (
-      <div key={majlis.id} className="flex flex-col border-b border-border last:border-0">
-        
-        {/* صورة الغلاف أو الأيقونة */}
-        {majlis.cover_url ? (
-          <div className="relative w-full h-28 overflow-hidden">
-            <img
-              src={majlis.cover_url}
-              alt={majlis.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-shade2 to-transparent" />
-            <div className="absolute bottom-2 right-3 flex items-center gap-2">
-              {majlis.icon_url && (
-                <img src={majlis.icon_url} alt="" className="w-7 h-7 rounded-full border border-border object-cover" />
-              )}
-              <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3 px-4 pt-3">
-            {majlis.icon_url ? (
-              <img src={majlis.icon_url} alt="" className="w-10 h-10 rounded-full border border-border object-cover shrink-0" />
-            ) : (
-              <div className="w-10 h-10 rounded-full bg-shade3 border border-border flex items-center justify-center shrink-0">
-                <FontAwesomeIcon icon={faUsers} className="w-4 h-4 text-primary" />
-              </div>
-            )}
-            <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
-          </div>
-        )}
 
-        {/* المعلومات */}
-        <div className="px-4 pb-3 flex flex-col gap-2 mt-2">
-          <div className="flex items-center gap-1 text-white/40 font-tajawal text-xs">
-            <FontAwesomeIcon icon={faUsers} className="w-3 h-3" />
-            <span>{majlis.members_count} عضو</span>
-          </div>
-          {majlis.description && (
-            <p className="text-white/50 font-tajawal text-xs leading-relaxed line-clamp-2">
-              {majlis.description}
-            </p>
-          )}
-          <Link
-            href={`/m/${majlis.slug}`}
-            className="w-full text-center bg-primary text-background font-tajawal font-bold text-xs py-2 rounded-lg hover:opacity-90 transition-opacity mt-1"
-          >
-            زيارة المجلس
-          </Link>
+      <div className="bg-shade2 border border-border rounded-xl">
+        <h2 className="text-white font-tajawal font-bold px-4 py-3 border-b border-border text-sm flex items-center">
+        <span className="text-primary text-2xl ml-2.5">✦</span>
+          المجالس المقترحة
+        </h2>
+        <div className="flex flex-col">
+          {majalis.map((majlis) => (
+            <div key={majlis.id} className="flex flex-col border-b border-border last:border-0">
+              
+              
+              {majlis.cover_url ? (
+                <div className="relative w-full h-28 overflow-hidden">
+                  <img
+                    src={majlis.cover_url}
+                    alt={majlis.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-shade2 to-transparent" />
+                  <div className="absolute bottom-2 right-3 flex items-center gap-2">
+                    {majlis.icon_url && (
+                      <img src={majlis.icon_url} alt="" className="w-7 h-7 rounded-full border border-border object-cover" />
+                    )}
+                    <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 px-4 pt-3">
+                  {majlis.icon_url ? (
+                    <img src={majlis.icon_url} alt="" className="w-10 h-10 rounded-full border border-border object-cover shrink-0" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-shade3 border border-border flex items-center justify-center shrink-0">
+                      <FontAwesomeIcon icon={faUsers} className="w-4 h-4 text-primary" />
+                    </div>
+                  )}
+                  <span className="text-white font-tajawal font-bold text-sm">مجلس {majlis.name}</span>
+                </div>
+              )}
+
+
+              <div className="px-4 pb-3 flex flex-col gap-2 mt-2">
+                <div className="flex items-center gap-1 text-white/40 font-tajawal text-xs">
+                  <FontAwesomeIcon icon={faUsers} className="w-3 h-3" />
+                  <span>{majlis.members_count} عضو</span>
+                </div>
+                {majlis.description && (
+                  <p className="text-white/50 font-tajawal text-xs leading-relaxed line-clamp-2">
+                    {majlis.description}
+                  </p>
+                )}
+                <Link
+                  href={`/m/${majlis.slug}`}
+                  className="w-full text-center bg-primary text-background font-tajawal font-bold text-xs py-2 rounded-lg hover:opacity-90 transition-opacity mt-1"
+                >
+                  زيارة المجلس
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
     </aside>
   );
 }

@@ -18,7 +18,7 @@ export async function POST(
 
   if (!majlis) return Response.json({ error: "المجلس غير موجود" }, { status: 404 });
 
-  // تحقق إن مش عضو مسبقاً
+  
   const { data: existing } = await supabase
     .from("majalis_members")
     .select("role")
@@ -36,12 +36,12 @@ export async function POST(
       .eq("majlis_id", majlis.id)
       .single();
   
-    // لو في طلب معلق فقط، ما يسمح بطلب جديد
+      
     if (existingRequest && existingRequest.status === "pending") {
       return Response.json({ error: "لديك طلب انضمام سابق" }, { status: 409 });
     }
   
-    // لو الطلب انرفض، احذفه وأنشئ طلب جديد
+    
     if (existingRequest && existingRequest.status === "rejected") {
       await supabase
         .from("majalis_join_requests")
@@ -57,7 +57,6 @@ export async function POST(
   
     return Response.json({ message: "تم إرسال طلب الانضمام", status: "pending" });
   } else {
-    // انضم مباشرة
     await supabase.from("majalis_members").insert({
       user_id: decoded.userId,
       majlis_id: majlis.id,
@@ -68,7 +67,7 @@ export async function POST(
       .update({ members_count: majlis.is_private ? 0 : supabase.rpc })
       .eq("id", majlis.id);
 
-    // حدث عدد الأعضاء
+      
     const { count } = await supabase
       .from("majalis_members")
       .select("*", { count: "exact", head: true })

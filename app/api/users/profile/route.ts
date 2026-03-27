@@ -42,7 +42,7 @@ export async function PATCH(request: Request) {
     avatarFile = formData.get("avatar") as File | null;
   }
 
-  // تحقق من الإيميل لو موجود
+  
   if (updates.email) {
     const { data: existing } = await supabase
       .from("users")
@@ -56,7 +56,7 @@ export async function PATCH(request: Request) {
     }
   }
 
-  // رفع الصورة لو موجودة
+  
   if (avatarFile && avatarFile.size > 0) {
     const ext = avatarFile.name.split(".").pop();
     const fileName = `avatars/${decoded.userId}.${ext}`;

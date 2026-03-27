@@ -18,7 +18,7 @@ export async function PATCH(
 
   if (!majlis) return Response.json({ error: "المجلس غير موجود" }, { status: 404 });
 
-  // تحقق إن المستخدم مؤسس أو مشرف
+  
   const { data: member } = await supabase
     .from("majalis_members")
     .select("role")

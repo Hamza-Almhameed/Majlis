@@ -19,7 +19,7 @@ export async function POST(
   if (!targetUser) return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
   if (targetUser.id === decoded.userId) return Response.json({ error: "لا يمكنك حظر نفسك" }, { status: 400 });
 
-  // تحقق إذا محظور مسبقاً
+  
   const { data: existing } = await supabase
     .from("blocks")
     .select("blocker_id")
@@ -28,13 +28,11 @@ export async function POST(
     .single();
 
   if (existing) {
-    // إلغاء الحظر
     await supabase.from("blocks").delete()
       .eq("blocker_id", decoded.userId)
       .eq("blocked_id", targetUser.id);
     return Response.json({ blocked: false });
   } else {
-    // حظر
     await supabase.from("blocks").insert({
       blocker_id: decoded.userId,
       blocked_id: targetUser.id,

@@ -45,7 +45,7 @@ export async function DELETE(
   const { data: majlis } = await supabase
     .from("majalis").select("id, created_by").eq("slug", slug).single();
 
-  // المؤسس أو المشرف يقدر يطرد
+    
   const { data: requesterMember } = await supabase
     .from("majalis_members")
     .select("role")
@@ -57,7 +57,7 @@ export async function DELETE(
     return Response.json({ error: "غير مصرح" }, { status: 403 });
   }
 
-  // ما يقدر يطرد المؤسس
+  
   if (userId === majlis!.created_by) {
     return Response.json({ error: "لا يمكن طرد المؤسس" }, { status: 403 });
   }
@@ -68,7 +68,7 @@ export async function DELETE(
     .eq("user_id", userId)
     .eq("majlis_id", majlis!.id);
 
-  // حدث عدد الأعضاء
+    
   const { count } = await supabase
     .from("majalis_members")
     .select("*", { count: "exact", head: true })

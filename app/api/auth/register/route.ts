@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export async function POST(request: Request) {
   const { username, password, confirmPassword } = await request.json();
 
-  // تحقق من المدخلات
+
   if (!username || !password || !confirmPassword) {
     return Response.json(
       { error: "جميع الحقول مطلوبة" },
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // تحقق إن اسم المستخدم ما موجود
+  
   const { data: existingUser } = await supabase
     .from("users")
     .select("id")
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // تحقق إن اسم المستخدم عربي فقط
+
   const arabicUsernameRegex = /^[\u0600-\u0652\u0660-\u0669_0-9]+$/;
   if (!arabicUsernameRegex.test(username)) {
     return Response.json(
@@ -50,10 +50,10 @@ export async function POST(request: Request) {
     );
   }
 
-  // تشفير كلمة المرور
+
   const password_hash = await bcrypt.hash(password, 12);
 
-  // إنشاء المستخدم
+
   const { data: newUser, error } = await supabase
     .from("users")
     .insert({ username, password_hash })
@@ -67,14 +67,14 @@ export async function POST(request: Request) {
     );
   }
 
-  // توليد JWT
+
   const token = jwt.sign(
     { userId: newUser.id, username: newUser.username },
     process.env.JWT_SECRET!,
     { expiresIn: "30d" }
   );
 
-  // إرجاع الـ token في cookie
+
   const response = Response.json(
     { message: "تم إنشاء الحساب بنجاح" },
     { status: 201 }

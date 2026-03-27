@@ -120,7 +120,6 @@ function Section({ title, icon, color, items }: {
             href={`/m/${item.majlis.slug}`}
             className="bg-shade2 border border-border rounded-2xl overflow-hidden hover:border-primary/40 transition-colors"
           >
-            {/* غلاف */}
             {item.majlis.cover_url && (
               <img src={item.majlis.cover_url} alt="" className="w-full h-16 object-cover" />
             )}

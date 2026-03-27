@@ -62,14 +62,14 @@ interface Part {
 
 function parseContent(content: string): Part[] {
   const parts: Part[] = [];
-  // regex يكتشف الـ mentions والـ hashtags والـ URLs
+
   const regex = /(@[\u0600-\u06FF\w]+)|(#[\u0600-\u06FF\w]+)|(https?:\/\/[^\s]+)/g;
 
   let lastIndex = 0;
   let match;
 
   while ((match = regex.exec(content)) !== null) {
-    // أضف النص قبل الـ match
+
     if (match.index > lastIndex) {
       parts.push({ type: "text", value: content.slice(lastIndex, match.index) });
     }
@@ -88,7 +88,7 @@ function parseContent(content: string): Part[] {
     lastIndex = match.index + match[0].length;
   }
 
-  // أضف ما تبقى من النص
+
   if (lastIndex < content.length) {
     parts.push({ type: "text", value: content.slice(lastIndex) });
   }

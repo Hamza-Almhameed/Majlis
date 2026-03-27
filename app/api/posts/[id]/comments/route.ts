@@ -24,7 +24,7 @@ export async function GET(
     } catch {}
   }
 
-  // جيب التعليقات الرئيسية فقط
+  
   const { data, error } = await supabase
     .from("comments")
     .select(`
@@ -49,7 +49,7 @@ export async function GET(
     return Response.json([]);
   }
 
-  // جيب الردود لكل التعليقات
+  
   const commentIds = data.map((c) => c.id);
   const { data: replies } = await supabase
     .from("comments")
@@ -65,7 +65,7 @@ export async function GET(
     .in("parent_id", commentIds)
     .order("created_at", { ascending: true });
 
-  // جيب إعجابات المستخدم
+    
   let userLikes: Set<string> = new Set();
   if (currentUserId) {
     const allIds = [...commentIds, ...(replies || []).map((r) => r.id)];
@@ -89,7 +89,7 @@ export async function GET(
     );
   }
 
-  // فلتر التعليقات
+  
   const filteredData = blockedIds.length > 0
     ? data.filter((c) => !blockedIds.includes(c.user_id))
     : data;
@@ -164,7 +164,7 @@ export async function POST(
     return Response.json({ error: "حدث خطأ" }, { status: 500 });
   }
 
-  // إشعار لصاحب المنشور
+  
   const { data: post } = await supabase
     .from("posts").select("user_id").eq("id", id).single();
 
@@ -178,7 +178,7 @@ export async function POST(
     });
   }
 
-  // إشعار لصاحب التعليق الأصلي لو كان رد
+  
   if (parent_id) {
     const { data: parentComment } = await supabase
       .from("comments").select("user_id").eq("id", parent_id).single();

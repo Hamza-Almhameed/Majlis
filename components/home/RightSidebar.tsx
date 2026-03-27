@@ -94,12 +94,12 @@ export default function RightSidebar() {
       dir="rtl"
       aria-label="شريط جانبي"
     >
-      {/* اللوغو */}
+      
       <h1 className="font-ashkal text-primary text-5xl text-right mb-2 select-none">
         مجلس
       </h1>
 
-      {/* زر انشاء */}
+
       <div className="relative">
         <button
           onClick={() => {
@@ -120,7 +120,7 @@ export default function RightSidebar() {
           />
         </button>
 
-        {/* القائمة المنسدلة */}
+
         {createOpen && (
           <div
             id="create-menu"
@@ -161,40 +161,40 @@ export default function RightSidebar() {
         )}
       </div>
 
-      {/* قائمة التنقل */}
+
       <nav className="flex flex-col gap-2 mt-1" aria-label="التنقل الرئيسي">
-  {menuItems.map((item) => {
-    const isActive =
-      item.href === "/"
-        ? pathname === "/"
-        : pathname === item.href || pathname?.startsWith(`${item.href}/`);
+        {menuItems.map((item) => {
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname?.startsWith(`${item.href}/`);
 
-    return (
-      <Link
-        key={item.href}
-        href={item.href}
-        aria-current={isActive ? "page" : undefined}
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-white font-tajawal text-sm ${
-          isActive
-            ? "bg-primary/20 shadow-md"
-            : "hover:bg-shade2/70"
-        } focus:outline-none focus:ring-2 focus:ring-primary/40`}
-      >
-        <div className="relative w-5 h-5 flex items-center justify-center text-white/90">
-  <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
-  {item.badge && unreadCount > 0 && (
-    <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-background text-[9px] font-bold rounded-full flex items-center justify-center">
-      {unreadCount > 9 ? "9+" : unreadCount}
-    </span>
-  )}
-</div>
-        <span className="flex-1 text-right">{item.label}</span>
-      </Link>
-    );
-  })}
-</nav>
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-white font-tajawal text-sm ${
+                isActive
+                  ? "bg-primary/20 shadow-md"
+                  : "hover:bg-shade2/70"
+              } focus:outline-none focus:ring-2 focus:ring-primary/40`}
+            >
+              <div className="relative w-5 h-5 flex items-center justify-center text-white/90">
+        <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
+        {item.badge && unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-background text-[9px] font-bold rounded-full flex items-center justify-center">
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </div>
+              <span className="flex-1 text-right">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
 
-      {/* البروفايل */}
+
       <div className="relative mt-auto">
         <button
           onClick={() => {

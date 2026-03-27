@@ -29,7 +29,7 @@ export async function GET(
 
   if (!majlis) return Response.json({ error: "المجلس غير موجود" }, { status: 404 });
 
-  // تحقق من الصلاحية للمجالس الخاصة
+  
   if (majlis.is_private && currentUserId) {
     const { data: member } = await supabase
       .from("majalis_members")
@@ -57,7 +57,7 @@ export async function GET(
 
   if (error) return Response.json({ error: error.message }, { status: 500 });
 
-  // جيب إعجابات وحفظ المستخدم
+  
   let userLikes: Set<string> = new Set();
   let userSaved: Set<string> = new Set();
 

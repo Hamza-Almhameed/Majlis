@@ -34,7 +34,7 @@ export async function GET(
     return Response.json({ error: "المجلس غير موجود" }, { status: 404 });
   }
 
-  // جيب دور المستخدم الحالي
+  
   let currentUserRole: string | null = null;
   let joinRequestStatus: string | null = null;
 
@@ -60,7 +60,7 @@ export async function GET(
     }
   }
 
-  // إحصائيات
+  
   const { count: postsCount } = await supabase
     .from("posts")
     .select("*", { count: "exact", head: true })

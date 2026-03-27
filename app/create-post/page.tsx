@@ -65,7 +65,7 @@ export default function CreatePostPage() {
       }
       if (e.key === "Enter" && focusedIndex >= -0) {
         e.preventDefault();
-        // focusedIndex -1 means "بدون مجلس"
+        // focusedIndex -1 means "no majlis" option
         if (focusedIndex === -1) setSelectedMajlis("");
         else setSelectedMajlis(majalisList[focusedIndex]?.id ?? "");
         setDropdownOpen(false);
@@ -167,7 +167,6 @@ export default function CreatePostPage() {
           </div>
 
           <div className="p-6 flex flex-col gap-4">
-            {/* رسالة الخطأ */}
             {error && (
               <p className="text-red-400 text-sm text-center font-tajawal bg-red-400/10 py-2 px-4 rounded-lg">
                 {error}
@@ -193,7 +192,7 @@ export default function CreatePostPage() {
               </div>
             </div>
 
-            {/* معاينة الصور */}
+
             {previews.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {previews.map((src, i) => (
@@ -271,7 +270,7 @@ export default function CreatePostPage() {
                 </div>
               </div>
 
-              {/* duration buttons: mutually exclusive permanent / temporary (3 days) */}
+              {/* duration buttons */}
               <div className="flex items-center justify-between gap-3">
               <span className="text-white/60 font-tajawal text-sm">مدة المنشور</span>
                 <div className="flex gap-2">

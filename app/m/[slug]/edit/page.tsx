@@ -104,7 +104,7 @@ export default function EditMajlisPage() {
             {error && <p className="text-red-400 text-sm font-tajawal bg-red-400/10 px-4 py-2 rounded-lg">{error}</p>}
             {success && <p className="text-primary text-sm font-tajawal bg-primary/10 px-4 py-2 rounded-lg">{success}</p>}
 
-            {/* صورة الغلاف */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">صورة الغلاف <span className="text-white/30">(اختياري)</span></label>
               <div
@@ -132,7 +132,7 @@ export default function EditMajlisPage() {
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) { setCoverFile(f); setCoverPreview(URL.createObjectURL(f)); } }} />
             </div>
 
-            {/* صورة المجلس */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">صورة المجلس</label>
               <div className="flex items-center gap-4">
@@ -152,7 +152,7 @@ export default function EditMajlisPage() {
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) { setIconFile(f); setIconPreview(URL.createObjectURL(f)); } }} />
             </div>
 
-            {/* الاسم */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">اسم المجلس</label>
               <input
@@ -163,7 +163,7 @@ export default function EditMajlisPage() {
               />
             </div>
 
-            {/* الوصف */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">وصف المجلس</label>
               <textarea
@@ -175,7 +175,7 @@ export default function EditMajlisPage() {
               />
             </div>
 
-            {/* القواعد */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">قواعد المجلس</label>
               <textarea
@@ -187,7 +187,7 @@ export default function EditMajlisPage() {
               />
             </div>
 
-            {/* الخصوصية */}
+
             <div className="flex flex-col gap-2">
               <label className="text-white/60 font-tajawal text-sm">خصوصية المجلس</label>
               <div className="flex gap-3">
@@ -215,7 +215,7 @@ export default function EditMajlisPage() {
               )}
             </div>
 
-            {/* زر الحفظ */}
+
             <button
               onClick={handleSave}
               disabled={saving}

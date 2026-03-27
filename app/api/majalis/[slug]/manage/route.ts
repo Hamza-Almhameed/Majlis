@@ -33,7 +33,7 @@ export async function GET(
 
   const { majlis } = auth;
 
-  // جيب الأعضاء
+  
   const { data: members } = await supabase
     .from("majalis_members")
     .select(`
@@ -43,7 +43,7 @@ export async function GET(
     .eq("majlis_id", majlis.id)
     .order("joined_at", { ascending: true });
 
-  // جيب طلبات الانضمام المعلقة
+    
   const { data: joinRequests } = await supabase
     .from("majalis_join_requests")
     .select(`
@@ -54,7 +54,7 @@ export async function GET(
     .eq("status", "pending")
     .order("created_at", { ascending: true });
 
-  // إحصائيات
+    
   const { count: postsCount } = await supabase
     .from("posts").select("*", { count: "exact", head: true }).eq("majlis_id", majlis.id);
 

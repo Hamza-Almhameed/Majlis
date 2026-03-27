@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل" }, { status: 400 });
   }
 
-  // جيب كلمة المرور الحالية
+
   const { data: user } = await supabase
     .from("users")
     .select("password_hash")
@@ -28,11 +28,11 @@ export async function POST(request: Request) {
 
   if (!user) return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
 
-  // تحقق من كلمة المرور الحالية
+
   const isValid = await bcrypt.compare(currentPassword, user.password_hash);
   if (!isValid) return Response.json({ error: "كلمة المرور الحالية غير صحيحة" }, { status: 401 });
 
-  // حدث كلمة المرور
+
   const password_hash = await bcrypt.hash(newPassword, 12);
   await supabase.from("users").update({ password_hash }).eq("id", decoded.userId);
 

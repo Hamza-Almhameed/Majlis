@@ -12,22 +12,22 @@ export default function AboutPage() {
 
         <div className="flex-1 flex flex-col gap-6" dir="rtl">
 
-          {/* الهيدر */}
+          
           <div className="bg-shade2 border border-border rounded-2xl p-8 flex flex-col gap-3 text-center items-center">
             <h1 className="font-ashkal text-primary text-6xl select-none">مجلس</h1>
             <p className="text-white/60 font-tajawal text-lg">منصة تواصل اجتماعي عربية قائمة على الخصوصية</p>
             <span className="text-white/30 font-tajawal text-xs bg-shade3 px-3 py-1 rounded-full">الإصدار 0.1.0 - نسخة تجريبية</span>
           </div>
 
-          {/* الرؤية */}
+          
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-4">
             <h2 className="text-white font-tajawal font-bold text-xl">ما هو مجلس؟</h2>
             <p className="text-white/70 font-tajawal leading-loose text-right">
-              مجلس هي منصة تواصل اجتماعي عربية مبنية على فكرة المجتمعات أو "المجالس"، مستوحاة من ثقافتنا العربية الأصيلة حيث كان المجلس مكاناً للحوار والنقاش والتبادل الفكري. تتيح المنصة للمستخدمين إنشاء مجالس متخصصة والانضمام إليها، ومشاركة الأفكار والنقاشات في بيئة آمنة تحترم خصوصيتك.
+              مجلس هي منصة تواصل اجتماعي عربية مبنية على فكرة المجتمعات أو "المجالس"، مستوحاة من ثقافتنا العربية حيث كان المجلس مكاناً للحوار والنقاش والتبادل الفكري. تتيح المنصة للمستخدمين إنشاء مجالس متخصصة والانضمام إليها، ومشاركة الأفكار والنقاشات في بيئة آمنة تحترم خصوصيتك.
             </p>
           </div>
 
-          {/* القيم */}
+          
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-4">
             <h2 className="text-white font-tajawal font-bold text-xl">قيمنا</h2>
             <div className="grid grid-cols-1 gap-4">
@@ -35,7 +35,7 @@ export default function AboutPage() {
                 {
                   icon: faLock,
                   title: "الخصوصية أولاً",
-                  desc: "لا نطلب إيميلاً أو رقم هاتف للتسجيل. اسم مستخدم وكلمة مرور فقط، لأن هويتك ملكك.",
+                  desc: "لا نطلب بريدًا أو رقم هاتف للتسجيل. اسم مستخدم وكلمة مرور فقط، لأن هويتك ملكك.",
                 },
                 {
                   icon: faUsers,
@@ -66,7 +66,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* المطور */}
+          
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-4">
             <h2 className="text-white font-tajawal font-bold text-xl">المطور</h2>
             <div className="flex items-center gap-4 p-4 bg-shade3/40 rounded-xl">
@@ -89,7 +89,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* التواصل */}
+
           <div className="bg-shade2 border border-border rounded-2xl p-6 flex flex-col gap-3">
             <h2 className="text-white font-tajawal font-bold text-xl">تواصل معنا</h2>
             <p className="text-white/60 font-tajawal text-sm leading-relaxed">

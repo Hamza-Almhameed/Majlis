@@ -19,7 +19,7 @@ export async function POST(
     userId: string;
   };
 
-  // تحقق إذا كان الإعجاب موجود مسبقاً
+  
   const { data: existing } = await supabase
     .from("likes")
     .select("user_id")
@@ -28,14 +28,13 @@ export async function POST(
     .single();
 
   if (existing) {
-    // إلغاء الإعجاب
     await supabase
       .from("likes")
       .delete()
       .eq("user_id", decoded.userId)
       .eq("post_id", id);
 
-    // جيب العدد الجديد
+      
     const { count } = await supabase
       .from("likes")
       .select("*", { count: "exact", head: true })
@@ -43,7 +42,6 @@ export async function POST(
 
     return Response.json({ liked: false, count: count || 0 });
   } else {
-    // إضافة إعجاب
     await supabase
       .from("likes")
       .insert({ user_id: decoded.userId, post_id: id });

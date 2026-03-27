@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export async function POST(request: Request) {
   const { username, password } = await request.json();
 
-  // تحقق من المدخلات
+
   if (!username || !password) {
     return Response.json(
       { error: "جميع الحقول مطلوبة" },
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // ابحث عن المستخدم
+  
   const { data: user } = await supabase
     .from("users")
     .select("id, username, password_hash")
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // تحقق من كلمة المرور
+
   const isValid = await bcrypt.compare(password, user.password_hash);
 
   if (!isValid) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // توليد JWT
+
   const token = jwt.sign(
     { userId: user.id, username: user.username },
     process.env.JWT_SECRET!,

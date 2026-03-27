@@ -11,7 +11,7 @@ export async function DELETE(request: Request) {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
   const { password } = await request.json();
 
-  // تحقق من كلمة المرور
+
   const { data: user } = await supabase
     .from("users")
     .select("password_hash")
@@ -23,10 +23,10 @@ export async function DELETE(request: Request) {
   const isValid = await bcrypt.compare(password, user.password_hash);
   if (!isValid) return Response.json({ error: "كلمة المرور غير صحيحة" }, { status: 401 });
 
-  // احذف المستخدم (الـ cascade بيحذف كل بياناته)
+
   await supabase.from("users").delete().eq("id", decoded.userId);
 
-  // امسح الـ cookie
+
   const response = Response.json({ message: "تم حذف الحساب" });
   response.headers.set("Set-Cookie", "token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict");
 

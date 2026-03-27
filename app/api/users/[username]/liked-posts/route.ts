@@ -13,7 +13,7 @@ export async function GET(
   const from = page * limit;
   const to = from + limit - 1;
 
-  // تحقق إن المستخدم الحالي هو نفسه صاحب البروفايل
+  
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   if (!token) return Response.json({ error: "غير مسجل" }, { status: 401 });

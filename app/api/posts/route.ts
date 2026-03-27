@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const from = page * limit;
   const to = from + limit - 1;
 
-  // جيب المستخدم الحالي أولاً
+  
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   let currentUserId: string | null = null;
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     } catch {}
   }
 
-  // جيب قائمة المحظورين
+  
   let blockedIds: string[] = [];
   if (currentUserId) {
     const { data: blocks } = await supabase
@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     );
   }
 
-  // جيب المجالس الخاصة
+  
   const { data: privateMajalis } = await supabase
     .from("majalis")
     .select("id")
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 
   const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
 
-  // جيب المجالس الخاصة اللي المستخدم عضو فيها
+  
   let userPrivateMajalisIds: string[] = [];
   if (currentUserId && privateMajalisIds.length > 0) {
     const { data: memberOf } = await supabase
@@ -54,12 +54,12 @@ export async function GET(request: Request) {
     userPrivateMajalisIds = memberOf?.map((m) => m.majlis_id) || [];
   }
 
-  // المجالس الخاصة اللي المستخدم مش عضو فيها
+  
   const excludedMajalisIds = privateMajalisIds.filter(
     (id) => !userPrivateMajalisIds.includes(id)
   );
 
-  // بناء الـ query
+  
   let query = supabase
     .from("posts")
     .select(`
@@ -73,14 +73,14 @@ export async function GET(request: Request) {
     .order("created_at", { ascending: false })
     .range(from, to);
 
-  // استثني منشورات المجالس الخاصة اللي المستخدم مش عضو فيها
+    
   if (excludedMajalisIds.length > 0) {
     query = query.or(
       `majlis_id.is.null,majlis_id.not.in.(${excludedMajalisIds.join(",")})`
     );
   }
 
-  // استثني المحظورين
+  
   if (blockedIds.length > 0) {
     query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
   }
@@ -97,7 +97,7 @@ export async function GET(request: Request) {
     comments_count: post.comments_count[0]?.count || 0,
   }));
 
-  // جيب المحفوظات
+  
   let userSaved: Set<string> = new Set();
   if (currentUserId && formatted.length > 0) {
     const postIds = formatted.map((p) => p.id);
@@ -110,7 +110,7 @@ export async function GET(request: Request) {
     userSaved = new Set(saved?.map((s) => s.post_id) || []);
   }
 
-  // جيب الإعجابات
+  
   let userLikes: Set<string> = new Set();
   if (currentUserId && formatted.length > 0) {
     const postIds = formatted.map((p) => p.id);
