@@ -24,7 +24,11 @@ interface SearchResult {
   avatar_url: string | null;
 }
 
-export default function LeftSidebar() {
+interface LeftSidebarProps {
+  mobileVisible?: boolean;
+}
+
+export default function LeftSidebar({ mobileVisible = false }: LeftSidebarProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -55,7 +59,7 @@ export default function LeftSidebar() {
 
   return (
     <aside
-      className="hidden lg:flex fixed top-1/2 left-6 w-72 min-w-[18rem] h-[calc(100%-48px)] overflow-y-auto flex-col gap-4 py-6 px-4 rounded-xl bg-linear-to-b from-shade3/60 to-shade2/50 backdrop-blur-sm border border-border shadow-lg z-40 -translate-y-1/2"
+      className={`${mobileVisible ? "flex" : "hidden lg:flex"} ${mobileVisible ? "relative" : "fixed"} top-auto lg:top-1/2 left-auto lg:left-6 w-full lg:w-72 min-w-0 lg:min-w-[18rem] h-auto lg:h-[calc(100%-48px)] overflow-visible lg:overflow-y-auto flex-col gap-4 py-4 lg:py-6 px-4 rounded-xl bg-linear-to-b from-shade3/60 to-shade2/50 backdrop-blur-sm border border-border shadow-lg z-20 lg:z-40 lg:-translate-y-1/2`}
       dir="rtl"
       aria-label="شريط جانبي - البحث والمجالس"
     >

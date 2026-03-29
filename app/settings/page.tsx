@@ -266,10 +266,10 @@ export default function SettingsPage() {
   ];
 
   return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full mx-auto">
+    <main className="bg-background min-h-screen p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full mx-auto">
 
-        <div className="w-72 shrink-0"><LeftSidebar /></div>
+        <div className="w-full lg:w-72 lg:shrink-0"><LeftSidebar /></div>
 
 
         <div className="flex-1 flex flex-col gap-4">
@@ -365,7 +365,7 @@ export default function SettingsPage() {
         </div>
 
         
-        <div className="w-72 shrink-0">
+        <div className="w-full lg:w-72 lg:shrink-0">
             <RightSidebar />
         </div>
       </div>

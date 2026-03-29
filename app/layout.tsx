@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import OfflineAlert from "@/components/ui/OfflineAlert";
 import PresenceTracker from "@/components/ui/PresenceTracker";
+import MobileShell from "@/components/navigation/MobileShell";
 
 const ashkal = localFont({
   src: [
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ar" dir="rtl">
       <body className={`${ashkal.variable} ${tajawal.variable}`}>
-        {children}
+        <MobileShell>{children}</MobileShell>
         <OfflineAlert />
         <PresenceTracker />
       </body>

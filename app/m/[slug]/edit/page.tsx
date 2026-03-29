@@ -78,19 +78,19 @@ export default function EditMajlisPage() {
   }
 
   if (loading) return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full mx-auto">
-        <div className="w-72 shrink-0"><LeftSidebar /></div>
+    <main className="bg-background min-h-screen p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full mx-auto">
+        <div className="w-full lg:w-72 lg:shrink-0"><LeftSidebar /></div>
         <div className="flex-1 bg-shade2 rounded-2xl animate-pulse h-64" />
-        <div className="w-72 shrink-0"><RightSidebar /></div>
+        <div className="w-full lg:w-72 lg:shrink-0"><RightSidebar /></div>
       </div>
     </main>
   );
 
   return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full mx-auto">
-        <div className="w-72 shrink-0"><LeftSidebar /></div>
+    <main className="bg-background min-h-screen p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full mx-auto">
+        <div className="w-full lg:w-72 lg:shrink-0"><LeftSidebar /></div>
 
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex items-center gap-3" dir="rtl">
@@ -226,7 +226,7 @@ export default function EditMajlisPage() {
           </div>
         </div>
 
-        <div className="w-72 shrink-0"><RightSidebar /></div>
+        <div className="w-full lg:w-72 lg:shrink-0"><RightSidebar /></div>
       </div>
     </main>
   );

@@ -38,8 +38,8 @@ export default function PrivacyPage() {
   ];
 
   return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full mx-auto">
+    <main className="bg-background min-h-screen p-3 sm:p-6">
+      <div className="flex flex-col gap-4 w-full mx-auto">
 
         <div className="flex-1 flex flex-col gap-4" dir="rtl">
 
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
             <h1 className="text-white font-tajawal font-bold text-2xl">سياسة الخصوصية والشروط</h1>
             <p className="text-white/40 font-tajawal text-sm">آخر تحديث: مارس 2026</p>
             <p className="text-white/60 font-tajawal text-sm leading-relaxed mt-2">
-              في مجلس، نؤمن بأن الخصوصية حق أساسي لكل إنسان. هذه السياسة توضح كيف نتعامل مع بياناتك بشفافية كاملة.
+              في مجلس، نؤمن بأن الخصوصية حق أساسي لكل مستخدم. هذه السياسة توضح كيف نتعامل مع بياناتك بشفافية كاملة.
             </p>
           </div>
 

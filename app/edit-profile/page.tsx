@@ -70,8 +70,8 @@ export default function EditProfilePage() {
   }
 
   if (loading) return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full max-w-6xl mr-auto">
+    <main className="bg-background min-h-screen p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full max-w-6xl mr-auto">
         <div className="flex-1 bg-shade2 rounded-2xl animate-pulse h-64" />
         <RightSidebar />
       </div>
@@ -79,8 +79,8 @@ export default function EditProfilePage() {
   );
 
   return (
-    <main className="bg-background min-h-screen p-6">
-      <div className="flex gap-6 w-full max-w-6xl mr-auto">
+    <main className="bg-background min-h-screen p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full max-w-6xl mr-auto">
         <div className="flex-1 flex flex-col gap-4">
 
 

@@ -34,10 +34,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-background min-h-screen flex justify-center p-6">
-      <div className="flex flex-row-reverse gap-6 w-full">
+    <main className="bg-background min-h-screen flex justify-center p-3 sm:p-6 pb-24 lg:pb-6">
+      <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-6 w-full">
         
-        <div className="w-72 min-w-[18rem]" />
+        <div className="hidden lg:block w-72 min-w-[18rem]" />
         <LeftSidebar />
         
         <div className="flex-1">
@@ -51,7 +51,7 @@ export default function Home() {
           <Feed key={feedKey} currentUserId={user?.id} onDelete={refreshFeed}/>
         </div>
         
-        <div className="w-72 min-w-[18rem]" aria-hidden="true" />
+        <div className="hidden lg:block w-72 min-w-[18rem]" aria-hidden="true" />
         <RightSidebar />
       </div>
     </main>
