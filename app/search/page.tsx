@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -71,7 +71,7 @@ interface MajlisDetails {
   join_request_status: "pending" | "approved" | "rejected" | null;
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const q = useMemo(() => (searchParams.get("q") || "").trim(), [searchParams]);
@@ -478,3 +478,12 @@ export default function SearchPage() {
   );
 }
 
+
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background p-6 text-white">جارٍ التحميل ...</div>}>
+      <SearchPageContent />
+    </Suspense>
+  );
+}
