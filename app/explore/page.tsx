@@ -199,7 +199,7 @@ export default function ExplorePage() {
               <div className="text-white/40 font-tajawal text-sm">لا توجد نتائج حالياً</div>
             ) : (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {majalis
                     .filter((m) => !m.current_user_role)
                     .map((m) => {
@@ -257,7 +257,7 @@ export default function ExplorePage() {
                           <div className="flex items-center gap-2">
                             <Link
                               href={`/m/${m.slug}`}
-                              className="flex-1 px-2 py-1 rounded-lg bg-primary/10 text-primary font-tajawal font-bold text-[11px] text-center hover:bg-primary/20 transition-colors"
+                              className="flex-1 px-2 py-1 rounded-md bg-primary/10 text-primary font-tajawal font-bold text-[14px] text-center hover:bg-primary/20 transition-colors"
                             >
                               زيارة
                             </Link>
@@ -265,7 +265,7 @@ export default function ExplorePage() {
                             <button
                               onClick={() => handleJoinOrLeave(m)}
                               disabled={action.disabled}
-                              className={`px-2 py-1 rounded-lg font-tajawal text-[11px] font-bold transition-colors disabled:opacity-40 ${
+                              className={`px-2 py-1 rounded-md font-tajawal text-[14px] font-bold transition-colors disabled:opacity-40 ${
                                 action.disabled ? "bg-shade2 text-white/60" : "bg-primary text-background hover:opacity-90"
                               }`}
                             >

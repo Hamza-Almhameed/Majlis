@@ -16,7 +16,7 @@ export default function AboutPage() {
           <div className="bg-shade2 border border-border rounded-2xl p-8 flex flex-col gap-3 text-center items-center">
             <h1 className="font-ashkal text-primary text-6xl select-none">مجلس</h1>
             <p className="text-white/60 font-tajawal text-lg">منصة تواصل اجتماعي عربية قائمة على الخصوصية</p>
-            <span className="text-white/30 font-tajawal text-xs bg-shade3 px-3 py-1 rounded-full">الإصدار 0.1.0 - نسخة تجريبية</span>
+            <span className="text-white/30 font-tajawal text-xs bg-shade3 px-3 py-1 rounded-full">الإصدار 1.0 - نسخة تجريبية</span>
           </div>
 
           
