@@ -11,6 +11,7 @@ import {
   faUsers,
   faBookmark,
   faGear,
+  faCompass,
   faChevronDown,
   faPen,
   faCirclePlus,
@@ -22,6 +23,7 @@ import Avatar from "@/components/ui/Avatar";
 
 const menuItems = [
   { icon: faHouse, label: "الرئيسية", href: "/" },
+  { icon: faCompass, label: "استكشاف", href: "/explore" },
   { icon: faMessage, label: "المحادثات", href: "/messages" },
   { icon: faBell, label: "التنبيهات", href: "/notifications", badge: true },
   { icon: faUsers, label: "مجالسي", href: "/my-majalis" },

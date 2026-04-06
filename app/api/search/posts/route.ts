@@ -1,0 +1,136 @@
+import { supabase } from "@/lib/supabaseClient";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+
+const PAGE_SIZE = 20;
+
+function getSearchPattern(q: string) {
+  // Simple case-insensitive substring search.
+  return `%${q}%`;
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const q = searchParams.get("q")?.trim() || "";
+  const limitParam = parseInt(searchParams.get("limit") || String(PAGE_SIZE), 10);
+  const limit = Number.isFinite(limitParam) ? Math.max(1, Math.min(50, limitParam)) : PAGE_SIZE;
+
+  if (!q) return Response.json([]);
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  let currentUserId: string | null = null;
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+      currentUserId = decoded.userId;
+    } catch {}
+  }
+
+  let blockedIds: string[] = [];
+  if (currentUserId) {
+    const { data: blocks } = await supabase
+      .from("blocks")
+      .select("blocked_id, blocker_id")
+      .or(`blocker_id.eq.${currentUserId},blocked_id.eq.${currentUserId}`);
+
+    blockedIds = (blocks || []).map((b) =>
+      b.blocker_id === currentUserId ? b.blocked_id : b.blocker_id
+    );
+  }
+
+  const { data: privateMajalis } = await supabase
+    .from("majalis")
+    .select("id")
+    .eq("is_private", true);
+
+  const privateMajalisIds = privateMajalis?.map((m) => m.id) || [];
+
+  let userPrivateMajalisIds: string[] = [];
+  if (currentUserId && privateMajalisIds.length > 0) {
+    const { data: memberOf } = await supabase
+      .from("majalis_members")
+      .select("majlis_id")
+      .eq("user_id", currentUserId)
+      .in("majlis_id", privateMajalisIds);
+
+    userPrivateMajalisIds = memberOf?.map((m) => m.majlis_id) || [];
+  }
+
+  const excludedMajalisIds = privateMajalisIds.filter(
+    (id) => !userPrivateMajalisIds.includes(id)
+  );
+
+  let query = supabase
+    .from("posts")
+    .select(`
+      id, user_id, content, media_url, media_type,
+      is_temporary, created_at,
+      majlis_id,
+      user:users!posts_user_id_fkey(username, avatar_url, last_seen, show_last_seen),
+      majlis:majalis!posts_majlis_id_fkey(name, slug),
+      likes_count:likes(count),
+      comments_count:comments(count)
+    `)
+    .ilike("content", getSearchPattern(q))
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  // Hide private-majlis posts from non-members.
+  if (excludedMajalisIds.length > 0) {
+    query = query.or(
+      `majlis_id.is.null,majlis_id.not.in.(${excludedMajalisIds.join(",")})`
+    );
+  }
+
+  // Hide posts from blocked users.
+  if (blockedIds.length > 0) {
+    query = query.not("user_id", "in", `(${blockedIds.join(",")})`);
+  }
+
+  const { data: posts, error } = await query;
+  if (error) return Response.json({ error: error.message }, { status: 500 });
+
+  const formatted = (posts || []).map((post) => ({
+    ...post,
+    likes_count: post.likes_count[0]?.count || 0,
+    comments_count: post.comments_count[0]?.count || 0,
+  }));
+
+  let userSaved: Set<string> = new Set();
+  let userLikes: Set<string> = new Set();
+
+  if (currentUserId && formatted.length > 0) {
+    const postIds = formatted.map((p) => p.id);
+
+    const [{ data: saved }, { data: likes }] = await Promise.all([
+      supabase
+        .from("saved_posts")
+        .select("post_id")
+        .eq("user_id", currentUserId)
+        .in("post_id", postIds),
+      supabase
+        .from("likes")
+        .select("post_id")
+        .eq("user_id", currentUserId)
+        .in("post_id", postIds),
+    ]);
+
+    userSaved = new Set(saved?.map((s) => s.post_id) || []);
+    userLikes = new Set(likes?.map((l) => l.post_id) || []);
+  }
+
+  const withLikeStatus = formatted.map((post) => ({
+    ...post,
+    is_liked: userLikes.has(post.id),
+    is_saved: userSaved.has(post.id),
+    user: {
+      ...post.user,
+      last_seen: (post.user as any).show_last_seen ? (post.user as any).last_seen : null,
+    },
+  }));
+
+  return Response.json(withLikeStatus);
+}
+
